@@ -1,3 +1,6 @@
+platforms/*
+plugins/*
+
 # ANDROID / ECLIPSE
 
 # built application files
