@@ -6,17 +6,14 @@
         { id: 'menu03', text: 'อนุบาล 2', value: '2' },
         { id: 'menu04', text: 'อนุบาล 3', value: '3' },
         { id: 'menu05', text: 'อนุบาล 4', value: '4' },
-        { id: 'menu06', text: 'ออกจากระบบ', value: '5' }
+        { id: 'menu06', text: 'ตั้งค่าแบบฟอร์ม', value: '5' },
+        { id: 'menu07', text: 'ออกจากระบบ', value: '6' }
     ];
 
 	var bindings = [{
 	    element: '.list-group li.contact-item',
 		event: 'click',
 		handler: openContact
-	}, {
-	    element: '#isRemember',
-	    event: 'click',
-	    handler: rememberMe
 	}];
 
 	var state = {
@@ -44,14 +41,16 @@
         var target = e.target.parentNode.parentNode;
         var value = target.getAttribute('value');
         if (value) {
-            if (value == '5') { // logout
+            if (value == menus.length - 1) { // logout
+                // clear user data and back to login screen
+                // ***
+                ////////////////////
                 app.f7.loginScreen();
             }
+            else if (value == menus.length - 2) { // formEdit
+                app.router.load('formEdit');
+            }
         }
-    }
-
-    function rememberMe(e) {
-        console.log('remember ' + e.target.checked);
     }
 
     function openContact(e) {
