@@ -16,10 +16,12 @@ define(function() {
 	 * @param controllerName
 	 * @param query
 	 */
-	function load(controllerName, query) {
-		require(['js/' + controllerName + '/'+ controllerName + 'Controller'], function(controller) {
-			controller.init(query);
-		});
+    function load(controllerName, query) {
+        if (controllerName) {
+            require(['js/' + controllerName + '/' + controllerName + 'Controller'], function (controller) {
+                controller.init(query);
+            });
+        }
 	}
 
 	return {

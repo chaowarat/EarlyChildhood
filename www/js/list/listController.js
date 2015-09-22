@@ -9,9 +9,9 @@
     ];
 
 	var bindings = [{
-		element: '.contact-add-link',
+	    element: '.list-group li.contact-item',
 		event: 'click',
-		handler: openAddPopup
+		handler: openContact
 	}];
 
 	var state = {
@@ -37,12 +37,18 @@
     }
 
     function menuClick(e) {
-        var target = e.target.parentNode.parentNode;
+        var target = e.target.parentNode.parentNode;        
         console.log(target.getAttribute('value'));
     }
 
-	function openAddPopup() {
-		app.router.load('contactEdit', { 'isFavorite': state.isFavorite });
+    function openContact(e) {
+        var target = e.target;
+        var i = 0;
+        while (target.getAttribute('class') != 'contact-item' && i < 10) {
+            target = target.parentNode;
+            i++;
+        }
+        app.router.load('dailyForm', { id: target.getAttribute('data-id') });
 	}
 
 	function showAll() {

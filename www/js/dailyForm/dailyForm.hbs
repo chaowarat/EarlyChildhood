@@ -1,0 +1,118 @@
+<div class="popup">
+  <div class="view view-popup navbar-fixed">
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="left">
+          <a href="#" class="back link close-popup">
+            <i class="icon icon-back"></i>แบบประเมินการปฏิบัติกิจวัตรประจำวัน
+          </a>
+        </div>
+        <div class="right contact-save-link">
+          <a href="#" class="link">Save</a>
+        </div>
+      </div>
+    </div>
+    <div class="page">
+      <div class="page-content contact-edit-form">
+
+        <div class="contact-header">
+          <div class="item-photo">
+            <img src="img/cats/{{model.picId}}.png" />
+          </div>
+          <div class="header-text">
+            <h3>{{model.firstName}} {{model.lastName}}</h3>
+            <p>{{model.company}}</p>
+          </div>
+        </div>
+
+        <div class="content-block-title">1. การดื่มนม</div>
+        <div class="contact-other list-block">
+          <ul>
+            <li>
+              <label class="label-radio item-content">
+                <input type="radio" name="my-radio" value="1" checked="checked" />
+                  <div class="item-media">
+                    <i class="icon icon-form-radio"></i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title">3 ปฏิบัติได้ดีโดยไม่ต้องตักเตือน</div>
+                  </div>
+                </label>
+            </li>
+            <li>
+              <label class="label-radio item-content">
+                <input type="radio" name="my-radio" value="2" />
+                  <div class="item-media">
+                    <i class="icon icon-form-radio"></i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title">2 มีการตักเตือนในบางครั้ง</div>
+                  </div>
+                </label>
+            </li>
+            <li>
+              <label class="label-radio item-content">
+                <input type="radio" name="my-radio" value="1" />
+                <div class="item-media">
+                  <i class="icon icon-form-radio"></i>
+                </div>
+                <div class="item-inner">
+                  <div class="item-title">1 ยังปฏิบัติด้วยตนเองไม่ได้</div>
+                </div>
+              </label>
+            </li>
+          </ul>
+        </div>
+
+        <div class="content-block-title">1. การดื่มนม</div>
+        <div class="contact-other list-block">
+          <ul>
+            <li>
+              <label class="label-radio item-content">
+                <input type="radio" name="my-radio2" value="1" checked="checked" />
+                <div class="item-media">
+                  <i class="icon icon-form-radio"></i>
+                </div>
+                <div class="item-inner">
+                  <div class="item-title">3 ปฏิบัติได้ดีโดยไม่ต้องตักเตือน</div>
+                </div>
+              </label>
+            </li>
+            <li>
+              <label class="label-radio item-content">
+                <input type="radio" name="my-radio2" value="2" />
+                <div class="item-media">
+                  <i class="icon icon-form-radio"></i>
+                </div>
+                <div class="item-inner">
+                  <div class="item-title">2 มีการตักเตือนในบางครั้ง</div>
+                </div>
+              </label>
+            </li>
+            <li>
+              <label class="label-radio item-content">
+                <input type="radio" name="my-radio2" value="1" />
+                <div class="item-media">
+                  <i class="icon icon-form-radio"></i>
+                </div>
+                <div class="item-inner">
+                  <div class="item-title">1 ยังปฏิบัติด้วยตนเองไม่ได้</div>
+                </div>
+              </label>
+            </li>
+          </ul>
+        </div>
+        
+        {{#unless state.isNew}}
+        <div class="list-block">
+          <ul>
+            <li>
+              <a href="#" class="item-link list-button contact-delete-button">Delete contact</a>
+            </li>
+          </ul>
+        </div>
+        {{/unless}}
+      </div>
+    </div>
+  </div>
+</div>

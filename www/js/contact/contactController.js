@@ -7,11 +7,12 @@ define(["app","js/contact/contactView", "js/contactModel"], function(app, Contac
 		handler: runEditMode
 	}];
 
-	function init(query) {
+	function init(query) {	    
 		var contacts = JSON.parse(localStorage.getItem("f7Contacts"));
 		if (query && query.id) {
 			contact = new Contact(_.find(contacts, { id: query.id }));
 		}
+        console.log(query)
 		ContactView.render({
 			model: contact,
 			bindings: bindings
