@@ -1,4 +1,4 @@
-define(["app", "js/contactModel", "js/dailyForm/dailyFormView"], function (app, Contact, View) {
+﻿define(["app", "js/contactModel", "js/dailyForm/dailyFormView"], function (app, Contact, View) {
 
 	var contact = null;
 	var state = {
@@ -25,7 +25,7 @@ define(["app", "js/contactModel", "js/dailyForm/dailyFormView"], function (app, 
 
 	function deleteContact() {
 		app.f7.actions([[{
-			text: 'Delete Contact',
+			text: 'ยืนยันการลบ',
 			red: true,
 			onClick: function() {
 				var contacts = JSON.parse(localStorage.getItem("f7Contacts"));
@@ -36,7 +36,7 @@ define(["app", "js/contactModel", "js/dailyForm/dailyFormView"], function (app, 
 				app.f7.closeModal();
 			}
 		}], [{
-			text: 'Cancel',
+			text: 'ยกเลิก',
 			bold: true
 		}]]);
 	}

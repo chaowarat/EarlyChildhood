@@ -1,7 +1,7 @@
 ﻿define(["app", "js/contactModel","js/list/listView"], function(app, Contact, ListView) {
 
     var menus = [
-        { id: 'menu01', text: 'Home', value: '0' },
+        { id: 'menu01', text: 'หน้าแรก', value: '0' },
         { id: 'menu02', text: 'อนุบาล 1', value: '1' },
         { id: 'menu03', text: 'อนุบาล 2', value: '2' },
         { id: 'menu04', text: 'อนุบาล 3', value: '3' },
@@ -28,7 +28,6 @@
             };
             bindings.push(obj);
         }
-        console.log(menus)
 		ListView.render({
 			bindings: bindings,
 			model: contacts,

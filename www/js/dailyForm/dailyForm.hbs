@@ -4,11 +4,11 @@
       <div class="navbar-inner">
         <div class="left">
           <a href="#" class="back link close-popup">
-            <i class="icon icon-back"></i>แบบประเมินการปฏิบัติกิจวัตรประจำวัน
+            <i class="icon icon-back"></i>กิจวัตรประจำวัน
           </a>
         </div>
         <div class="right contact-save-link">
-          <a href="#" class="link">Save</a>
+          <a href="#" class="link">บันทึก</a>
         </div>
       </div>
     </div>
@@ -20,11 +20,33 @@
             <img src="img/cats/{{model.picId}}.png" />
           </div>
           <div class="header-text">
+            {{#if model.isFavorite}}<i class="icon icon-favorite ion-star"></i>{{/if}}
             <h3>{{model.firstName}} {{model.lastName}}</h3>
             <p>{{model.company}}</p>
           </div>
         </div>
 
+        <div class="list-block">
+          <ul>
+            <li>
+              <div class="item-content">
+                <div class="item-media">
+                  <i class="icon ion-star-outline"></i>
+                </div>
+                <div class="item-inner">
+                  <div class="item-title">Favorite</div>
+                  <div class="item-after">
+                    <label class="label-switch">
+                      <input id="isFavorite" type="checkbox" {{#if model.isFavorite}}checked="on"{{/if}}">
+                      <div class="checkbox"></div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        
         <div class="content-block-title">1. การดื่มนม</div>
         <div class="contact-other list-block">
           <ul>
@@ -100,6 +122,7 @@
                 </div>
               </label>
             </li>
+
           </ul>
         </div>
         
@@ -107,7 +130,7 @@
         <div class="list-block">
           <ul>
             <li>
-              <a href="#" class="item-link list-button contact-delete-button">Delete contact</a>
+              <a href="#" class="item-link list-button contact-delete-button">ลบรายชื่อ</a>
             </li>
           </ul>
         </div>

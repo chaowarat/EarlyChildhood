@@ -13,8 +13,12 @@ body {
   background: #fff;
 }
 .searchbar {
-  background: #fafafa;
+  background: #74baee;
   border-bottom: 0px;
+}
+.content-block-title {
+  font-weight: bold;
+  font-size:18px;
 }
 .searchbar .searchbar-cancel {
   color: #777777;
