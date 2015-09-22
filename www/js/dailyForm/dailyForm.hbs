@@ -46,87 +46,28 @@
             </li>
           </ul>
         </div>
-        
-        <div class="content-block-title">1. การดื่มนม</div>
+
+        {{#each data}}
+        <div class="content-block-title">{{qNo}}. {{qText}}</div>
         <div class="contact-other list-block">
           <ul>
+            {{#each answer}}
             <li>
               <label class="label-radio item-content">
-                <input type="radio" name="my-radio" value="1" checked="checked" />
-                  <div class="item-media">
-                    <i class="icon icon-form-radio"></i>
-                  </div>
-                  <div class="item-inner">
-                    <div class="item-title">3 ปฏิบัติได้ดีโดยไม่ต้องตักเตือน</div>
-                  </div>
-                </label>
-            </li>
-            <li>
-              <label class="label-radio item-content">
-                <input type="radio" name="my-radio" value="2" />
-                  <div class="item-media">
-                    <i class="icon icon-form-radio"></i>
-                  </div>
-                  <div class="item-inner">
-                    <div class="item-title">2 มีการตักเตือนในบางครั้ง</div>
-                  </div>
-                </label>
-            </li>
-            <li>
-              <label class="label-radio item-content">
-                <input type="radio" name="my-radio" value="1" />
+                <input type="radio" name="{{../qNo}}" value="{{aValue}}" {{#if checked}}checked="on"{{/if}}"/>
                 <div class="item-media">
                   <i class="icon icon-form-radio"></i>
                 </div>
                 <div class="item-inner">
-                  <div class="item-title">1 ยังปฏิบัติด้วยตนเองไม่ได้</div>
+                  <div class="item-title">{{aValue}} {{aText}}</div>
                 </div>
               </label>
             </li>
+            {{/each}}
           </ul>
         </div>
+        {{/each}}
 
-        <div class="content-block-title">1. การดื่มนม</div>
-        <div class="contact-other list-block">
-          <ul>
-            <li>
-              <label class="label-radio item-content">
-                <input type="radio" name="my-radio2" value="1" checked="checked" />
-                <div class="item-media">
-                  <i class="icon icon-form-radio"></i>
-                </div>
-                <div class="item-inner">
-                  <div class="item-title">3 ปฏิบัติได้ดีโดยไม่ต้องตักเตือน</div>
-                </div>
-              </label>
-            </li>
-            <li>
-              <label class="label-radio item-content">
-                <input type="radio" name="my-radio2" value="2" />
-                <div class="item-media">
-                  <i class="icon icon-form-radio"></i>
-                </div>
-                <div class="item-inner">
-                  <div class="item-title">2 มีการตักเตือนในบางครั้ง</div>
-                </div>
-              </label>
-            </li>
-            <li>
-              <label class="label-radio item-content">
-                <input type="radio" name="my-radio2" value="1" />
-                <div class="item-media">
-                  <i class="icon icon-form-radio"></i>
-                </div>
-                <div class="item-inner">
-                  <div class="item-title">1 ยังปฏิบัติด้วยตนเองไม่ได้</div>
-                </div>
-              </label>
-            </li>
-
-          </ul>
-        </div>
-        
-        {{#unless state.isNew}}
         <div class="list-block">
           <ul>
             <li>
@@ -134,7 +75,6 @@
             </li>
           </ul>
         </div>
-        {{/unless}}
       </div>
     </div>
   </div>

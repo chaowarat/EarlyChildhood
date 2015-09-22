@@ -5,13 +5,18 @@
         { id: 'menu02', text: 'อนุบาล 1', value: '1' },
         { id: 'menu03', text: 'อนุบาล 2', value: '2' },
         { id: 'menu04', text: 'อนุบาล 3', value: '3' },
-        { id: 'menu05', text: 'อนุบาล 4', value: '4' }
+        { id: 'menu05', text: 'อนุบาล 4', value: '4' },
+        { id: 'menu06', text: 'ออกจากระบบ', value: '5' }
     ];
 
 	var bindings = [{
 	    element: '.list-group li.contact-item',
 		event: 'click',
 		handler: openContact
+	}, {
+	    element: '#isRemember',
+	    event: 'click',
+	    handler: rememberMe
 	}];
 
 	var state = {
@@ -36,8 +41,17 @@
     }
 
     function menuClick(e) {
-        var target = e.target.parentNode.parentNode;        
-        console.log(target.getAttribute('value'));
+        var target = e.target.parentNode.parentNode;
+        var value = target.getAttribute('value');
+        if (value) {
+            if (value == '5') { // logout
+                app.f7.loginScreen();
+            }
+        }
+    }
+
+    function rememberMe(e) {
+        console.log('remember ' + e.target.checked);
     }
 
     function openContact(e) {

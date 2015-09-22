@@ -11,16 +11,22 @@ require.config({
     }
 });
 define('app', ['js/router', 'js/utils'], function(Router, Utils) {
-	Router.init();
+    Router.init();    
 	var f7 = new Framework7({
 		modalTitle: 'Contacts7',
 		swipePanel: 'left',
 		animateNavBackIcon: true,
 		material: true
 	});
+	f7.loginScreen();
     var mainView = f7.addView('.view-main', {
         dynamicNavbar: true
     });
+    var mySearchbar = f7.searchbar('.searchbar', {
+        searchList: '.contacts-list',
+        searchIn: '.item-title'
+    });
+
 	return {
 		f7: f7,
 		mainView: mainView,

@@ -1,8 +1,8 @@
-define(['app', 'js/contactModel', 'hbs!js/dailyForm/dailyForm'], function (app, Contact, editTemplate) {
+define(['app', 'js/contactModel', 'hbs!js/dailyForm/dailyForm'], function (app, Contact, dailyForm) {
 	var $ = Dom7;
 
 	function render(params) {
-		var template = editTemplate({ model: params.model, state: params.state });
+	    var template = dailyForm({ model: params.model, state: params.state, data: params.data });
 		app.f7.popup(template);
 		bindEvents(params.bindings);
 		bindSaveEvent(params.doneCallback);
