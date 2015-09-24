@@ -16,44 +16,30 @@
       <div class="page-content contact-edit-form">
         <div style="height:100%" class="swiper-container swiper-init" data-speed="400" data-space-between="40" data-pagination=".swiper-pagination">
           <div class="swiper-wrapper">
-            <div class="swiper-slide">
 
-              <div class="content-block-title">ด้านที่ 1</div>
+            {{#each model}}
+            <div class="swiper-slide">
+              <div class="content-block-title">{{sectionName}}</div>
               <div class="list-block">
                 <ul>
-                  <!-- Single chekbox item -->
+                  {{#each data}}
                   <li>
                     <label class="label-checkbox item-content">
-                      <!-- Checked by default -->
-                      <input type="checkbox" name="my-checkbox" value="Books" checked="checked" />
-                        <div class="item-media">
-                          <i class="icon icon-form-checkbox"></i>
-                        </div>
-                        <div class="item-inner">
-                          <div class="item-title">Books</div>
-                        </div>
-                      </label>
+                      <input type="checkbox" section="{{../sectionId}}" value="{{qId}}" />
+                      <div class="item-media">
+                        <i class="icon icon-form-checkbox"></i>
+                      </div>
+                      <div class="item-inner">
+                        <div class="item-title">{{qText}}</div>
+                      </div>
+                    </label>
                   </li>
-                  <!-- Another chekbox item -->
-                  <li>
-                    <label class="label-checkbox item-content">
-                      <input type="checkbox" name="my-checkbox" value="Movies" />
-                        <div class="item-media">
-                          <i class="icon icon-form-checkbox"></i>
-                        </div>
-                        <div class="item-inner">
-                          <div class="item-title">Movies</div>
-                        </div>
-                      </label>
-                  </li>
+                  {{/each}}
                 </ul>
               </div>
-
-
             </div>
-            <div class="swiper-slide">Slide 2</div>
-            <div class="swiper-slide">Slide 3</div>
-            <div class="swiper-slide">Slide 3</div>
+            {{/each}}
+
           </div>
           <div class="swiper-pagination"></div>
         </div>
@@ -61,3 +47,4 @@
     </div>
   </div>
 </div>
+

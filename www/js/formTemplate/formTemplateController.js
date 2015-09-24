@@ -1,12 +1,12 @@
 ﻿define(["app", "js/formTemplate/formTemplateView"], function (app, View) {
 
     var template = [
-        { id: '001', name: 'แบบฟอร์มที่ 1', content: generateContent('001'), selected: true },
-        { id: '002', name: 'แบบฟอร์มที่ 2', content: generateContent('002') },
-        { id: '003', name: 'แบบฟอร์มที่ 3', content: generateContent('003') },
-        { id: '004', name: 'แบบฟอร์มที่ 4', content: generateContent('004') },
-        { id: '005', name: 'แบบฟอร์มที่ 5', content: generateContent('005') },
-        { id: '006', name: 'แบบฟอร์มที่ 6', content: generateContent('006') }
+        { id: '001', name: 'แบบฟอร์มที่ 1', content: generateContent('001'), data:[], selected: true },
+        { id: '002', name: 'แบบฟอร์มที่ 2', content: generateContent('002'), data: [] },
+        { id: '003', name: 'แบบฟอร์มที่ 3', content: generateContent('003'), data: [] },
+        { id: '004', name: 'แบบฟอร์มที่ 4', content: generateContent('004'), data: [] },
+        { id: '005', name: 'แบบฟอร์มที่ 5', content: generateContent('005'), data: [] },
+        { id: '006', name: 'แบบฟอร์มที่ 6', content: generateContent('006'), data: [] }
     ];
     var bindings = [{
         element: '.button-select-template',
