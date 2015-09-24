@@ -43,9 +43,8 @@
 	    app.f7.closeModal('#newFormModal');
 	}
 
-	function saveTemplate(inputValues) {
-
-	    var template = { id: app.utils.generateGUID(), name: '', content: '', data: [] };
+	function saveTemplate(inputValues, name, detail) {
+	    var template = { id: app.utils.generateGUID(), name: name, content: detail, data: [], selected: true };
 	    var _data = sections.slice();
 	    for (var i = 0; i < inputValues.length; i++) {
 	        var _sectionId = inputValues[i].getAttribute('section');
@@ -67,21 +66,15 @@
 	        }
 	    }
 	    template.data = _data;
-	    //app.router.load('newFormSave', { template: template });
-
-		//contact.setValues(inputValues);
-		//if (!contact.validate()) {
-		//	app.f7.alert("First name and last name are empty");
-		//	return;
-		//}
-		//var contacts = JSON.parse(localStorage.getItem("f7Contacts"));
-		//if (!state.isNew) {
-		//	_.remove(contacts, { id: contact.id });
-		//}
-		//contacts.push(contact);
-		//localStorage.setItem("f7Contacts", JSON.stringify(contacts));
-		//app.router.load('list'); // reRender main page view
-		//closePage();
+	    var templates = JSON.parse(localStorage.getItem("templates"));
+	    if (templates) {
+	        for (var i = 0; i < templates.length; i++) {
+	            templates[i]['selected'] = false;
+	        }
+	        templates.push(template);
+	        localStorage.setItem("templates", JSON.stringify(templates));
+	    }	    
+		closePage();
 	}
 
 	function generateContent(id) {

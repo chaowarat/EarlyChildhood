@@ -75,7 +75,7 @@
 	    return text;
 	}
 
-	function createTemplate() {		
+	function createTemplate() {
 	    app.router.load('newForm');
 	}
 

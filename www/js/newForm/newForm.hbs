@@ -7,9 +7,6 @@
             <i class="icon icon-back"></i>สร้างแบบบันทึกกิจวัตรประจำวัน
           </a>
         </div>
-        <div class="right contact-save-link">
-          <a href="#" class="link">บันทึก</a>
-        </div>
       </div>
     </div>
     <div class="page">
@@ -39,6 +36,38 @@
               </div>
             </div>
             {{/each}}
+
+            <div class="swiper-slide">
+              <div class="content-block-title">บันทึกแบบฟอร์มที่สร้าง</div>
+              <div class="list-block">
+                <ul>
+                  <!-- Text inputs -->
+                  <li>
+                    <div class="item-content">
+                      <div class="item-inner">
+                        <div class="item-title label">ชื่อแบบฟอร์ม</div>
+                        <div class="item-input">
+                          <input type="text" id="input-form-name" placeholder="ชื่อ" />
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <!-- Textarea -->
+                  <li class="align-top">
+                    <div class="item-content">
+                      <div class="item-inner">
+                        <div class="item-title label">คำอธิบายแบบฟอร์ม</div>
+                        <div class="item-input">
+                          <textarea id="input-form-detail"></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+              <a href="#" class="button active contact-save-link">บันทึก</a>
+            </div>
 
           </div>
           <div class="swiper-pagination"></div>
