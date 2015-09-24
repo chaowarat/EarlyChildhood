@@ -29,12 +29,21 @@
                 handler: menuClick
             };
             bindings.push(obj);
-        }
+        }        
 		ListView.render({
 			bindings: bindings,
 			model: contacts,
-            menu: menus
+			menu: menus,
+			header: getHeaderName('menu02')
 		});
+    }
+
+    function getHeaderName(id) {
+        for (var i = 0; i < menus.length; i++) {
+            if (menus[i].id == id) {
+                return 'รายชื่อนักเรียน ' + menus[i].text;
+            }
+        }
     }
 
     function menuClick(e) {
@@ -48,7 +57,11 @@
                 app.f7.loginScreen();
             }
             else if (value == menus.length - 2) { // formEdit
-                app.router.load('formEdit');
+                app.router.load('formTemplate');
+            }
+            else { // room
+                var contacts = loadContacts();
+                ListView.reRender({ model: contacts, header: getHeaderName(target.getAttribute('id')) });
             }
         }
     }

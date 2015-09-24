@@ -1,0 +1,41 @@
+<div id="formTemplateModal" class="popup">
+  <div class="view view-popup navbar-fixed">
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="left">
+          <a href="#" class="back link close-popup">
+            <i class="icon icon-back"></i>เลือกแบบฟอร์ม
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="page">
+
+      <div class="page-content contact-edit-form">
+
+        {{#each model}}
+        <div class="card">
+          <div class="card-header">
+            <h3>{{#if selected}}<span style="font-weight: normal;font-size: 90%;">(เลือก)</span> {{/if}}{{name}}</h3>
+          </div>
+          <div class="card-content">
+            <div class="card-content-inner">{{inHTML content}}</div>
+          </div>
+          <div class="card-footer">
+            <a href="#" class="button button-select-template" data-value="{{id}}">เลือก</a>
+            {{#if selected}}
+            <a href="#" class="button">แก้ไข</a>
+            {{/if}}
+          </div>
+        </div>
+        {{/each}}
+
+      </div>
+
+      <a href="#" class="floating-button color-pink create-new-link">
+        <i class="icon icon-plus"></i>
+      </a>
+
+    </div>
+  </div>
+</div>
