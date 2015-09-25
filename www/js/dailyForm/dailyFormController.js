@@ -10,22 +10,7 @@
 		handler: deleteContact
 	}];
 
-	var questions = [
-        {
-            qText: 'การดื่มนม', qId: '01', qNo: 1, answer: [
-                { aText: 'ปฏิบัติได้ดีโดยไม่ต้องตักเตือน', aValue: '3', checked: true},
-                { aText: 'มีการตักเตือนในบางครั้ง', aValue: '2' },
-                { aText: 'ยังปฏิบัติด้วยตนเองไม่ได้', aValue: '1' }
-            ]
-        },
-        {
-            qText: 'การรับประทานอาหาร', qId: '02', qNo: 2, answer: [
-                { aText: 'ปฏิบัติได้ดีโดยไม่ต้องตักเตือน', aValue: '3', checked: true },
-                { aText: 'มีการตักเตือนในบางครั้ง', aValue: '2' },
-                { aText: 'ยังปฏิบัติด้วยตนเองไม่ได้', aValue: '1' }
-            ]
-        }
-	];
+	var questions = [];
 
 	function init(query){
 		var contacts = JSON.parse(localStorage.getItem("f7Contacts"));
@@ -37,7 +22,25 @@
 			contact = new Contact({ isFavorite: query.isFavorite });
 			state.isNew = true;
 		}
+		questions = getQuestion();
 		View.render({ model: contact, bindings: bindings, state: state, doneCallback: saveContact, data: questions });
+	}
+
+	function getQuestion() {
+	    var data = localStorage.getItem("templates");
+	    var templates = data ? JSON.parse(data) : [];
+	    var template = null;
+	    for (var i = 0; i < templates.length; i++) {
+	        if (templates[i].selected == true) {
+	            template = templates[i];
+	        }
+	    }
+	    if (template) {
+	        return template.data;
+	    }
+	    else{
+	        return null;
+	    }
 	}
 
 	function deleteContact() {

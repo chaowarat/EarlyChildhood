@@ -20,7 +20,10 @@
 		isFavorite: false
 	};
 
-    function init() {
+	function init() {
+	    if (!JSON.parse(localStorage.getItem('templates'))) {
+	        templateInitializeStorage();
+	    }
         var contacts = loadContacts();
         for (var i = 0; i < menus.length; i++) {
             var obj = {
@@ -119,6 +122,59 @@
 		];
 		localStorage.setItem("f7Contacts", JSON.stringify(contacts));
 		return JSON.parse(localStorage.getItem("f7Contacts"));
+	}
+
+	function templateInitializeStorage() {
+	    var templates = [
+        {
+            id: '001', name: 'แบบฟอร์มที่ 1', content: generateContent('001'),
+            data: [
+                {
+                    sectionId: 1, sectionName: 'ด้านที่ 1',
+                    data: [
+                        {
+                            qText: 'การดื่มนม', qId: '01', qNo: 1,
+                            answer: [
+                                { aText: 'ปฏิบัติได้ดีโดยไม่ต้องตักเตือน', aValue: '3', checked: true },
+                                { aText: 'มีการตักเตือนในบางครั้ง', aValue: '2' },
+                                { aText: 'ยังปฏิบัติด้วยตนเองไม่ได้', aValue: '1' }
+                            ]
+                        },
+                        {
+                            qText: 'การรับประทานอาหาร', qId: '02', qNo: 1,
+                            answer: [
+                                { aText: 'ปฏิบัติได้ดีโดยไม่ต้องตักเตือน', aValue: '3', checked: true },
+                                { aText: 'มีการตักเตือนในบางครั้ง', aValue: '2' },
+                                { aText: 'ยังปฏิบัติด้วยตนเองไม่ได้', aValue: '1' }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    sectionId: 2, sectionName: 'ด้านที่ 2',
+                    data: [
+                        {
+                            qText: 'การนอน', qId: '03', qNo: 1,
+                            answer: [
+                                { aText: 'ปฏิบัติได้ดีโดยไม่ต้องตักเตือน', aValue: '3', checked: true },
+                                { aText: 'มีการตักเตือนในบางครั้ง', aValue: '2' },
+                                { aText: 'ยังปฏิบัติด้วยตนเองไม่ได้', aValue: '1' }
+                            ]
+                        }
+                    ]
+                }
+            ], selected: true
+        },
+        { id: '002', name: 'แบบฟอร์มที่ 2', content: generateContent('002'), data: [] },
+        { id: '003', name: 'แบบฟอร์มที่ 3', content: generateContent('003'), data: [] }
+	    ];
+	    localStorage.setItem("templates", JSON.stringify(templates));
+	}
+
+	function generateContent(id) {
+	    var text = 'The content of ' + id;
+	    text += '<br /> Card with header and footer. <br />Card header is used to display card title and footer for some additional information or for custom actions.';
+	    return text;
 	}
 
 	function contactSort(a, b) {

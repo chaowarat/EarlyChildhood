@@ -47,6 +47,12 @@
           </ul>
         </div>
 
+        {{#unless data}}
+        <h3>ยังไม่ได้เลือกแบบฟอร์ม หรือแบบฟอร์มใช้งานไม่ได้</h3>        
+        {{/unless}}
+
+        {{#each data}}
+        <div class="content-block-title">{{sectionName}}</div>
         {{#each data}}
         <div class="content-block-title">{{qNo}}. {{qText}}</div>
         <div class="contact-other list-block">
@@ -66,6 +72,8 @@
             {{/each}}
           </ul>
         </div>
+        {{/each}}
+
         {{/each}}
 
         <div class="list-block">

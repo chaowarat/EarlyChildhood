@@ -71,7 +71,18 @@
 	        for (var i = 0; i < templates.length; i++) {
 	            templates[i]['selected'] = false;
 	        }
-	        templates.push(template);
+	        templates.sort(function (a, b) {
+	            if (a.id > b.id) {
+	                return 1;
+	            }
+	            if (a.id < b.id) {
+	                return -1;
+	            }
+	            return 0;
+	        });
+	        var tmp = [];
+	        tmp.push(template);
+	        templates = tmp.concat(templates);
 	        localStorage.setItem("templates", JSON.stringify(templates));
 	    }	    
 		closePage();
