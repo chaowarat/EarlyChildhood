@@ -21,9 +21,9 @@
     };
 
     function init() {
-        //if (!JSON.parse(localStorage.getItem('templates'))) {
-        templateInitializeStorage();
-        //}
+        if (!JSON.parse(localStorage.getItem('templates'))) {
+            templateInitializeStorage();
+        }
         var contacts = loadContacts();
         for (var i = 0; i < menus.length; i++) {
             var obj = {
@@ -141,7 +141,7 @@
                             ]
                         },
                         {
-                            qText: 'การรับประทานอาหาร', qId: '02', qNo: 1,
+                            qText: 'การรับประทานอาหาร', qId: '02', qNo: 2,
                             answer: [
                                 { aText: 'ปฏิบัติได้ดีโดยไม่ต้องตักเตือน', aValue: '3', checked: true },
                                 { aText: 'มีการตักเตือนในบางครั้ง', aValue: '2' },

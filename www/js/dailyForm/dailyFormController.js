@@ -4,15 +4,19 @@
 	var state = {
 		isNew: false
 	};
+	var isEdit = false;
+	var oldAnswer = null;
 	var bindings = [{
 		element: '.contact-delete-button',
 		event: 'click',
 		handler: deleteContact
 	}];
 
-	var questions = [];
+	var template = {};
 
-	function init(query){
+	function init(query) {
+	    isEdit = false;
+	    oldAnswer = null;
 		var contacts = JSON.parse(localStorage.getItem("f7Contacts"));
 		if (query && query.id) {
 			contact = new Contact(_.find(contacts, { id: query.id }));
@@ -22,8 +26,43 @@
 			contact = new Contact({ isFavorite: query.isFavorite });
 			state.isNew = true;
 		}
-		questions = getQuestion();
-		View.render({ model: contact, bindings: bindings, state: state, doneCallback: saveContact, data: questions });
+		template = getQuestion();
+	    // load from local storage if exist
+	    // isEdit = true
+	    // edit ddl selected value in template
+	    // store answer id to answerId
+		var tmp = app.utils.getAnswers(app.utils.getDateNow(), contact.id);		
+		if (tmp) {
+		    oldAnswer = tmp.pop();
+		    if (oldAnswer) {
+		        isEdit = true;
+		        for (var i = 0; i < template.data.length; i++) {
+		            for (var j = 0; j < template.data[i].data.length; j++) {
+		                var answer = findValue(oldAnswer.answers, template.data[i].data[j].qId);
+		                if (answer) {
+		                    for (var k = 0; k < template.data[i].data[j].answer.length; k++) {
+		                        if (template.data[i].data[j].answer[k].aValue == answer) {
+		                            template.data[i].data[j].answer[k].checked = true;
+		                        }
+		                        else {
+		                            template.data[i].data[j].answer[k].checked = false;
+		                        }
+		                    }
+		                }
+		            }
+		        }
+		    }
+		}
+		View.render({ model: contact, bindings: bindings, state: state, doneCallback: saveContact, data: template.data });
+	}
+
+	function findValue(array, key){
+	    for (var i = 0; i < array.length; i++) {
+	        if (Object.keys(array[i])[0] == key) {
+	            return array[i][key];
+	        }
+	    }
+	    return null;
 	}
 
 	function getQuestion() {
@@ -36,7 +75,7 @@
 	        }
 	    }
 	    if (template) {
-	        return template.data;
+	        return template;
 	    }
 	    else{
 	        return null;
@@ -51,9 +90,10 @@
 				var contacts = JSON.parse(localStorage.getItem("f7Contacts"));
 				_.remove(contacts, { id: contact.id });
 				localStorage.setItem("f7Contacts", JSON.stringify(contacts));
+				closePage();
 				app.router.load('list'); // reRender main page view
 				app.mainView.goBack("index.html", false);
-				app.f7.closeModal();
+				
 			}
 		}], [{
 			text: 'ยกเลิก',
@@ -62,18 +102,24 @@
 	}
 
 	function saveContact(inputValues) {
-		contact.setValues(inputValues);
-		if (!contact.validate()) {
-			app.f7.alert("First name and last name are empty");
-			return;
-		}
-		var contacts = JSON.parse(localStorage.getItem("f7Contacts"));
-		if (!state.isNew) {
-			_.remove(contacts, { id: contact.id });
-		}
-		contacts.push(contact);
-		localStorage.setItem("f7Contacts", JSON.stringify(contacts));
-		app.router.load('list'); // reRender main page view
+	    var QAs = [];
+	    for (var i = 0; i < inputValues.length; i++) {
+	        if (inputValues[i].getAttribute('data-type') == 'QA' && inputValues[i].checked) {
+	            var tmp = {};
+	            tmp[inputValues[i].getAttribute('name')] = inputValues[i].getAttribute('value');
+	            QAs.push(tmp);
+	        }
+	    }
+	    var _id = app.utils.generateGUID();
+	    if (isEdit) {
+	        _id = oldAnswer.id;
+	    }
+	    var answer = {
+	        'id': _id,
+	        'recordDate': app.utils.getDateTimeNow(),
+	        'personId': contact.id, 'templateId': template.id, 'answers': QAs
+	    };
+	    app.utils.insertAnswer(answer);
 		closePage();
 	}
 
