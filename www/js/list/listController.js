@@ -68,7 +68,7 @@
             }
             else { // room
                 var contacts = loadContacts();
-                ListView.reRender({ model: contacts, header: getHeaderName(target.getAttribute('id')) });
+                ListView.reRender({ bindings: bindings, model: contacts, header: getHeaderName(target.getAttribute('id')) });
             }
         }
     }
