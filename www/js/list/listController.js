@@ -6,8 +6,9 @@
         { id: 'menu03', text: 'อนุบาล 2', value: '2' },
         { id: 'menu04', text: 'อนุบาล 3', value: '3' },
         { id: 'menu05', text: 'อนุบาล 4', value: '4' },
-        { id: 'menu06', text: 'ตั้งค่าแบบฟอร์ม', value: '5' },
-        { id: 'menu07', text: 'ออกจากระบบ', value: '6' }
+        { id: 'menu06', text: 'จัดการข้อมูล', value: '5' },
+        { id: 'menu07', text: 'ตั้งค่าแบบฟอร์ม', value: '6' },
+        { id: 'menu08', text: 'ออกจากระบบ', value: '7' }
     ];
 
     var bindings = [{
@@ -61,6 +62,9 @@
             }
             else if (value == menus.length - 2) { // formEdit
                 app.router.load('formTemplate');
+            }
+            else if (value == menus.length - 3) { // data management
+                app.router.load('sync');
             }
             else { // room
                 var contacts = loadContacts();
@@ -165,8 +169,7 @@
                 }
             ], selected: true
         },
-        { id: '002', name: 'แบบฟอร์มที่ 2', content: '', data: [] },
-        { id: '003', name: 'แบบฟอร์มที่ 3', content: '', data: [] }
+        { id: '002', name: 'แบบฟอร์มที่ 2', content: '', data: [] }
         ];
         for (var i = 0; i < templates.length; i++) {            
             templates[i].content = generateContent(templates[i].data);
