@@ -1,14 +1,14 @@
 ﻿define(["app", "js/contactModel", "js/list/listView"], function (app, Contact, ListView) {
 
     var menus = [
-        { id: 'menu01', text: 'หน้าแรก', value: '0' },
-        { id: 'menu02', text: 'อนุบาล 1', value: '1' },
-        { id: 'menu03', text: 'อนุบาล 2', value: '2' },
-        { id: 'menu04', text: 'อนุบาล 3', value: '3' },
-        { id: 'menu05', text: 'อนุบาล 4', value: '4' },
-        { id: 'menu06', text: 'จัดการข้อมูล', value: '5' },
-        { id: 'menu07', text: 'ตั้งค่าแบบฟอร์ม', value: '6' },
-        { id: 'menu08', text: 'ออกจากระบบ', value: '7' }
+        { id: 'menu01', text: 'หน้าแรก', value: '0', icon: 'icon ion-home' },
+        { id: 'menu02', text: 'อนุบาล 1', value: '1', icon: 'icon ion-clipboard' },
+        { id: 'menu03', text: 'อนุบาล 2', value: '2', icon: 'icon ion-clipboard' },
+        { id: 'menu04', text: 'อนุบาล 3', value: '3', icon: 'icon ion-clipboard' },
+        { id: 'menu05', text: 'อนุบาล 4', value: '4', icon: 'icon ion-clipboard' },
+        { id: 'menu06', text: 'จัดการข้อมูล', value: '5', icon: 'icon ion-loop' },
+        { id: 'menu07', text: 'ตั้งค่าแบบฟอร์ม', value: '6', icon: 'icon ion-settings' },
+        { id: 'menu08', text: 'ออกจากระบบ', value: '7', icon: 'icon ion-log-in' }
     ];
 
     var bindings = [{
