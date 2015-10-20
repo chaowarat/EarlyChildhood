@@ -34,7 +34,7 @@ define(['hbs!js/list/contact-list-item', 'hbs!js/list/contact-list-menu'], funct
 	}
 
 	function setHeaderText(text) {
-	    $('.navbar-inner .left .link').text(text);
+	    $('#headerText').text(text);
 	}
 
     return {

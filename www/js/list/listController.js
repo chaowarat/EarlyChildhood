@@ -1,15 +1,6 @@
 ﻿define(["app", "js/contactModel", "js/list/listView"], function (app, Contact, ListView) {
 
-    var menus = [
-        { id: 'menu01', text: 'หน้าแรก', value: '0', icon: 'icon ion-home' },
-        { id: 'menu02', text: 'อนุบาล 1', value: '1', icon: 'icon ion-clipboard' },
-        { id: 'menu03', text: 'อนุบาล 2', value: '2', icon: 'icon ion-clipboard' },
-        { id: 'menu04', text: 'อนุบาล 3', value: '3', icon: 'icon ion-clipboard' },
-        { id: 'menu05', text: 'อนุบาล 4', value: '4', icon: 'icon ion-clipboard' },
-        { id: 'menu06', text: 'จัดการข้อมูล', value: '5', icon: 'icon ion-loop' },
-        { id: 'menu07', text: 'ตั้งค่าแบบฟอร์ม', value: '6', icon: 'icon ion-settings' },
-        { id: 'menu08', text: 'ออกจากระบบ', value: '7', icon: 'icon ion-log-in' }
-    ];
+    var menu = [];
 
     var bindings = [{
         element: '.list-group li.contact-item',
@@ -26,9 +17,10 @@
             templateInitializeStorage();
         }
         var contacts = loadContacts();
-        for (var i = 0; i < menus.length; i++) {
+        generateMenu();
+        for (var i = 0; i < menu.length; i++) {
             var obj = {
-                element: '#' + menus[i].id,
+                element: '#' + menu[i].id,
                 event: 'click',
                 handler: menuClick
             };
@@ -37,15 +29,46 @@
         ListView.render({
             bindings: bindings,
             model: contacts,
-            menu: menus,
-            header: getHeaderName('menu02')
+            menu: menu,
+            header: getHeaderName(0)
         });
     }
 
+    function generateMenu() {
+        var rooms = getRooms();
+        menu = [
+            { id: 0, text: 'หน้าแรก', value: '0', icon: 'icon ion-home' }
+        ];
+        for (i = 0; i < rooms.length; i++) {
+            menu.push({ id: (i + 1), text: rooms[i], value: rooms[i], icon: 'icon ion-clipboard' });
+        }
+        menu.push({ id: rooms.length + 1, text: 'จัดการข้อมูล', value: '' + (rooms.length + 1), icon: 'icon ion-loop' });
+        menu.push({ id: rooms.length + 2, text: 'ตั้งค่าแบบฟอร์ม', value: '' + (rooms.length + 2), icon: 'icon ion-settings' });
+        menu.push({ id: rooms.length + 3, text: 'ออกจากระบบ', value: '' + (rooms.length + 3), icon: 'icon ion-log-in' });
+    }
+
+    function getRooms() {
+        var contacts = JSON.parse(localStorage.getItem("f7Contacts"));
+        var groups = _.groupBy(contacts, function (value) {
+            return value.class + ' ' + value.room;
+        });
+        var tmp = Object.keys(groups);        
+        tmp.sort(function (a, b) {
+            if (a > b && a.split(' ')[0] == b.split(' ')[0]) {
+                return 1;
+            }
+            return -1;
+        })
+        return tmp;
+    }
+
     function getHeaderName(id) {
-        for (var i = 0; i < menus.length; i++) {
-            if (menus[i].id == id) {
-                return 'รายชื่อนักเรียน ' + menus[i].text;
+        if (id == 0) {
+            return 'รายชื่อนักเรียนทั้งหมด';
+        }
+        for (var i = 0; i < menu.length; i++) {
+            if (menu[i].id == id) {
+                return 'รายชื่อนักเรียน ' + menu[i].text;
             }
         }
     }
@@ -54,20 +77,26 @@
         var target = e.target.parentNode.parentNode;
         var value = target.getAttribute('value');
         if (value) {
-            if (value == menus.length - 1) { // logout
+            if (value == '0') { // Home
+                var contacts = loadContacts();
+                ListView.reRender({ bindings: bindings, model: contacts, header: getHeaderName(target.getAttribute('id')) });
+            }
+            else if (value == menu.length - 1) { // logout
                 // clear user data and back to login screen
                 // ***
                 ////////////////////
                 app.f7.loginScreen();
             }
-            else if (value == menus.length - 2) { // formEdit
+            else if (value == menu.length - 2) { // formEdit
                 app.router.load('formTemplate');
             }
-            else if (value == menus.length - 3) { // data management
+            else if (value == menu.length - 3) { // data management
                 app.router.load('sync');
             }
             else { // room
-                var contacts = loadContacts();
+                var split = value.split(' ');
+                var filter = { "room": split[1], "class": split[0] };
+                var contacts = loadContacts(filter);
                 ListView.reRender({ bindings: bindings, model: contacts, header: getHeaderName(target.getAttribute('id')) });
             }
         }
@@ -109,20 +138,20 @@
 
     function tempInitializeStorage() {
         var contacts = [
-			new Contact({ "firstName": "Alex", "lastName": "Black", "company": "Global Think", "phone": "+380631234561", "email": "ainene@umail.com", "city": "London", isFavorite: true }),
-			new Contact({ "firstName": "Kate", "lastName": "Shy", "company": "Big Marketing", "phone": "+380631234562", "email": "mimimi@umail.com", "city": "Moscow" }),
-			new Contact({ "firstName": "Michael", "lastName": "Fold", "company": "1+1", "email": "slevoc@umail.com", "city": "Kiev", isFavorite: true }),
-			new Contact({ "firstName": "Ann", "lastName": "Ryder", "company": "95 Style", "email": "ryder@umail.com", "city": "Kiev" }),
-			new Contact({ "firstName": "Andrew", "lastName": "Smith", "company": "Cycle", "phone": "+380631234567", "email": "drakula@umail.com", "city": "Kiev" }),
-			new Contact({ "firstName": "Olga", "lastName": "Blare", "company": "Finance Time", "phone": "+380631234566", "email": "olga@umail.com", "city": "Kiev" }),
-			new Contact({ "firstName": "Svetlana", "lastName": "Kot", "company": "Global Think", "phone": "+380631234567", "email": "kot@umail.com", "city": "Odessa" }),
-			new Contact({ "firstName": "Kate", "lastName": "Lebedeva", "company": "Samsung", "phone": "+380631234568", "email": "kate@umail.com", "city": "Kiev" }),
-			new Contact({ "firstName": "Oleg", "lastName": "Price", "company": "Unilever", "phone": "+380631234568", "email": "uni@umail.com", "city": "Praha", isFavorite: true }),
-			new Contact({ "firstName": "Ivan", "lastName": "Ivanov", "company": "KGB", "phone": "+380631234570", "email": "agent@umail.com", "city": "Moscow" }),
-			new Contact({ "firstName": "Nadya", "lastName": "Lovin", "company": "Global Think", "phone": "+380631234567", "email": "kot@umail.com", "city": "Odessa" }),
-			new Contact({ "firstName": "Alex", "lastName": "Proti", "company": "Samsung", "phone": "+380631234568", "email": "kate@umail.com", "city": "Kiev" }),
-			new Contact({ "firstName": "Oleg", "lastName": "Ryzhkov", "company": "Unilever", "phone": "+380631234568", "email": "uni@umail.com", "city": "Praha", isFavorite: true }),
-			new Contact({ "firstName": "Daniel", "lastName": "Ricci", "company": "Finni", "phone": "+380631234570", "email": "agent@umail.com", "city": "Milan" })
+			new Contact({ "firstName": "Alex", "class": "อนุบาล", "room": "1", "lastName": "Black", "company": "Global Think", "phone": "+380631234561", "email": "ainene@umail.com", "city": "London", isFavorite: true, lat: 13.754595, long: 100.602089 }),
+			new Contact({ "firstName": "Kate", "class": "อนุบาล", "room": "1", "lastName": "Shy", "company": "Big Marketing", "phone": "+380631234562", "email": "mimimi@umail.com", "city": "Moscow" }),
+			new Contact({ "firstName": "Michael", "class": "อนุบาล", "room": "1", "lastName": "Fold", "company": "1+1", "email": "slevoc@umail.com", "city": "Kiev", isFavorite: true }),
+			new Contact({ "firstName": "Ann", "class": "อนุบาล", "room": "2", "lastName": "Ryder", "company": "95 Style", "email": "ryder@umail.com", "city": "Kiev" }),
+			new Contact({ "firstName": "Andrew", "class": "อนุบาล", "room": "2", "lastName": "Smith", "company": "Cycle", "phone": "+380631234567", "email": "drakula@umail.com", "city": "Kiev", lat: 14.724015, long: 100.559236 }),
+			new Contact({ "firstName": "Olga", "class": "อนุบาล", "room": "3", "lastName": "Blare", "company": "Finance Time", "phone": "+380631234566", "email": "olga@umail.com", "city": "Kiev" }),
+			new Contact({ "firstName": "Svetlana", "class": "อนุบาล", "room": "3", "lastName": "Kot", "company": "Global Think", "phone": "+380631234567", "email": "kot@umail.com", "city": "Odessa" }),
+			new Contact({ "firstName": "Kate", "class": "อนุบาล", "room": "3", "lastName": "Lebedeva", "company": "Samsung", "phone": "+380631234568", "email": "kate@umail.com", "city": "Kiev" }),
+			new Contact({ "firstName": "Oleg", "class": "มัธยมต้น", "room": "2", "lastName": "Price", "company": "Unilever", "phone": "+380631234568", "email": "uni@umail.com", "city": "Praha", isFavorite: true }),
+			new Contact({ "firstName": "Ivan", "class": "มัธยมต้น", "room": "2", "lastName": "Ivanov", "company": "KGB", "phone": "+380631234570", "email": "agent@umail.com", "city": "Moscow" }),
+			new Contact({ "firstName": "Nadya", "class": "มัธยมต้น", "room": "2", "lastName": "Lovin", "company": "Global Think", "phone": "+380631234567", "email": "kot@umail.com", "city": "Odessa" }),
+			new Contact({ "firstName": "Alex", "class": "มัธยมต้น", "room": "2", "lastName": "Proti", "company": "Samsung", "phone": "+380631234568", "email": "kate@umail.com", "city": "Kiev", lat: 15.719688, long: 100.600481 }),
+			new Contact({ "firstName": "Oleg", "class": "มัธยมต้น", "room": "1", "lastName": "Ryzhkov", "company": "Unilever", "phone": "+380631234568", "email": "uni@umail.com", "city": "Praha", isFavorite: true }),
+			new Contact({ "firstName": "Daniel", "class": "มัธยมต้น", "room": "1", "lastName": "Ricci", "company": "Finni", "phone": "+380631234570", "email": "agent@umail.com", "city": "Milan" })
         ];
         localStorage.setItem("f7Contacts", JSON.stringify(contacts));
         return JSON.parse(localStorage.getItem("f7Contacts"));
