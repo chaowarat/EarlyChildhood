@@ -1,4 +1,4 @@
-define(['hbs!js/list/contact-list-item', 'hbs!js/list/contact-list-menu'], function (template, menu) {
+define(['app', 'hbs!js/list/contact-list-item', 'hbs!js/list/contact-list-menu'], function (app, template, menu) {
     var $ = Dom7;
 
     function render(params) {
@@ -7,6 +7,7 @@ define(['hbs!js/list/contact-list-item', 'hbs!js/list/contact-list-menu'], funct
         $('.searchbar-cancel').click();
         setHeaderText(params.header);
         bindEvents(params.bindings);
+        bindLogin(params.loginCallback);
     }
 
     function reRender(params) {
@@ -31,6 +32,18 @@ define(['hbs!js/list/contact-list-item', 'hbs!js/list/contact-list-menu'], funct
 		for (var i in bindings) {
 			$(bindings[i].element).on(bindings[i].event, bindings[i].handler);
 		}
+	}
+
+	function bindLogin(loginCallback) {
+	    $('.login-submit').on('click', function () {
+	        loginCallback($('input[name="username"]').val(), $('input[name="password"]').val());
+	    });
+	    var memo = JSON.parse(localStorage.getItem("memo"));
+	    if (memo) {
+	        if (memo['0'] && memo['1']) {
+	            app.f7.closeModal('.login-screen');
+	        }
+	    }
 	}
 
 	function setHeaderText(text) {

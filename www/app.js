@@ -18,7 +18,7 @@ define('app', ['js/router', 'js/utils'], function(Router, Utils) {
 		animateNavBackIcon: true,
 		material: true
 	});
-	//f7.loginScreen();
+	f7.loginScreen();
     var mainView = f7.addView('.view-main', {
         dynamicNavbar: true
     });

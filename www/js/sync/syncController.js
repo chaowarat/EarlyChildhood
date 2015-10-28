@@ -39,7 +39,11 @@ define(["app", "js/contactModel", "js/sync/syncView"], function (app, Contact, V
         app.f7.confirm('', 'อัพเดทข้อมูลหรือไม่?',
             function () {
                 setTimeout(function () {
-                    var url = 'http://private-edu.azurewebsites.net/webservices/getservice.svc/getStudents?USERNAME=XXX&PASSWORD=XXX&YEAR=2015';
+                    var memo = JSON.parse(localStorage.getItem("memo"));
+                    if (!memo['0'] || !memo['1']) {
+                        return;
+                    }
+                    var url = 'http://private-edu.azurewebsites.net/webservices/getservice.svc/getStudents?USERNAME=' + app.utils.Base64.decode(memo['0']) + '&PASSWORD=' + app.utils.Base64.decode(memo['1']) + '&YEAR=2015';
                     Dom7.ajax({
                         url: url,
                         dataType: 'json',

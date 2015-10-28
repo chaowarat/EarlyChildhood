@@ -30,14 +30,43 @@
             bindings: bindings,
             model: contacts,
             menu: menu,
+            loginCallback: login,
             header: getHeaderName(0)
         });
+    }
+
+    function login(user, pass) {
+        if (user && pass) {
+            app.f7.showIndicator();
+            var url = 'http://private-edu.azurewebsites.net/webservices/getservice.svc/getCheckUser?USERNAME=' + user + '&PASSWORD=' + pass;
+            Dom7.ajax({
+                url: url,
+                dataType: 'json',
+                success: function (msg) {
+                    app.f7.hideIndicator();
+                    var response = JSON.parse(msg);
+                    localStorage.setItem("user", response.data.Name);
+                    if (response.status.toLowerCase() == 'ok') {
+                        var memo = { 0: app.utils.Base64.encode(user), 1: app.utils.Base64.encode(pass) };
+                        localStorage.setItem("memo", JSON.stringify(memo));
+                        app.router.load('list');
+                    }
+                    else {
+                        app.f7.alert(response.errorMessage, 'ERROR!');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    app.f7.hideIndicator();
+                    app.f7.alert(xhr.responseText + 'โปรดลงทะเบียนที่ระบบหลัก', 'ERROR!');
+                }
+            });            
+        }        
     }
 
     function generateMenu() {
         var rooms = getRooms();
         menu = [
-            { id: 0, text: 'หน้าแรก', value: '0', icon: 'icon ion-home' }
+            { id: 0, text: localStorage.getItem('user'), value: '0', icon: 'icon ion-home' }
         ];
         for (i = 0; i < rooms.length; i++) {
             menu.push({ id: (i + 1), text: rooms[i], value: rooms[i], icon: 'icon ion-clipboard' });
@@ -82,10 +111,12 @@
                 ListView.reRender({ bindings: bindings, model: contacts, header: getHeaderName(target.getAttribute('id')) });
             }
             else if (value == menu.length - 1) { // logout
-                // clear user data and back to login screen
-                // ***
-                ////////////////////
-                app.f7.loginScreen();
+                app.f7.showIndicator();
+                localStorage.removeItem('f7Contacts');
+                localStorage.removeItem('memo');
+                localStorage.removeItem('rooms');
+                localStorage.removeItem('user');
+                setTimeout(function () { app.f7.hideIndicator(); app.f7.loginScreen(); }, 1000);
             }
             else if (value == menu.length - 2) { // formEdit
                 app.router.load('formTemplate');
