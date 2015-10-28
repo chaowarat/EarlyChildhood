@@ -1,4 +1,4 @@
-﻿define(['app', 'hbs!js/sync/sync', 'hbs!js/sync/roomPanel', 'hbs!js/sync/rightPanel'], function (app, newForm, room, rpanel) {
+define(['app', 'hbs!js/sync/sync', 'hbs!js/sync/roomPanel', 'hbs!js/sync/rightPanel'], function (app, newForm, room, rpanel) {
 	var $ = Dom7;
 
 	function render(params) {	    

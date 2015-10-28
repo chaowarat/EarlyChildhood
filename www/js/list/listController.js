@@ -50,7 +50,7 @@
     function getRooms() {
         var contacts = JSON.parse(localStorage.getItem("f7Contacts"));
         var groups = _.groupBy(contacts, function (value) {
-            return value.class + ' ' + value.room;
+            return value.class + '/' + value.roomId;
         });
         var tmp = Object.keys(groups);        
         tmp.sort(function (a, b) {
@@ -94,8 +94,8 @@
                 app.router.load('sync');
             }
             else { // room
-                var split = value.split(' ');
-                var filter = { "room": split[1], "class": split[0] };
+                var split = value.split('/');
+                var filter = { "roomId": split[1], "class": split[0] };
                 var contacts = loadContacts(filter);
                 ListView.reRender({ bindings: bindings, model: contacts, header: getHeaderName(target.getAttribute('id')) });
             }
@@ -136,22 +136,22 @@
         return contacts;
     }
 
-    function tempInitializeStorage() {
+    function tempInitializeStorage() {        
         var contacts = [
-			new Contact({ "firstName": "Alex", "class": "อนุบาล", "room": "1", "lastName": "Black", "company": "Global Think", "phone": "+380631234561", "email": "ainene@umail.com", "city": "London", isFavorite: true, lat: 13.754595, long: 100.602089 }),
-			new Contact({ "firstName": "Kate", "class": "อนุบาล", "room": "1", "lastName": "Shy", "company": "Big Marketing", "phone": "+380631234562", "email": "mimimi@umail.com", "city": "Moscow" }),
-			new Contact({ "firstName": "Michael", "class": "อนุบาล", "room": "1", "lastName": "Fold", "company": "1+1", "email": "slevoc@umail.com", "city": "Kiev", isFavorite: true }),
-			new Contact({ "firstName": "Ann", "class": "อนุบาล", "room": "2", "lastName": "Ryder", "company": "95 Style", "email": "ryder@umail.com", "city": "Kiev" }),
-			new Contact({ "firstName": "Andrew", "class": "อนุบาล", "room": "2", "lastName": "Smith", "company": "Cycle", "phone": "+380631234567", "email": "drakula@umail.com", "city": "Kiev", lat: 14.724015, long: 100.559236 }),
-			new Contact({ "firstName": "Olga", "class": "อนุบาล", "room": "3", "lastName": "Blare", "company": "Finance Time", "phone": "+380631234566", "email": "olga@umail.com", "city": "Kiev" }),
-			new Contact({ "firstName": "Svetlana", "class": "อนุบาล", "room": "3", "lastName": "Kot", "company": "Global Think", "phone": "+380631234567", "email": "kot@umail.com", "city": "Odessa" }),
-			new Contact({ "firstName": "Kate", "class": "อนุบาล", "room": "3", "lastName": "Lebedeva", "company": "Samsung", "phone": "+380631234568", "email": "kate@umail.com", "city": "Kiev" }),
-			new Contact({ "firstName": "Oleg", "class": "มัธยมต้น", "room": "2", "lastName": "Price", "company": "Unilever", "phone": "+380631234568", "email": "uni@umail.com", "city": "Praha", isFavorite: true }),
-			new Contact({ "firstName": "Ivan", "class": "มัธยมต้น", "room": "2", "lastName": "Ivanov", "company": "KGB", "phone": "+380631234570", "email": "agent@umail.com", "city": "Moscow" }),
-			new Contact({ "firstName": "Nadya", "class": "มัธยมต้น", "room": "2", "lastName": "Lovin", "company": "Global Think", "phone": "+380631234567", "email": "kot@umail.com", "city": "Odessa" }),
-			new Contact({ "firstName": "Alex", "class": "มัธยมต้น", "room": "2", "lastName": "Proti", "company": "Samsung", "phone": "+380631234568", "email": "kate@umail.com", "city": "Kiev", lat: 15.719688, long: 100.600481 }),
-			new Contact({ "firstName": "Oleg", "class": "มัธยมต้น", "room": "1", "lastName": "Ryzhkov", "company": "Unilever", "phone": "+380631234568", "email": "uni@umail.com", "city": "Praha", isFavorite: true }),
-			new Contact({ "firstName": "Daniel", "class": "มัธยมต้น", "room": "1", "lastName": "Ricci", "company": "Finni", "phone": "+380631234570", "email": "agent@umail.com", "city": "Milan" })
+			new Contact({ "firstName": "Alex", "class": "อนุบาล", "classId": "04", "roomId": "1", "lastName": "Black", "company": "Global Think", "phone": "+380631234561", "email": "ainene@umail.com", "city": "London", isFavorite: true, lat: 13.754595, long: 100.602089 }),
+			new Contact({ "firstName": "Kate", "class": "อนุบาล", "classId": "04", "roomId": "1", "lastName": "Shy", "company": "Big Marketing", "phone": "+380631234562", "email": "mimimi@umail.com", "city": "Moscow" }),
+			new Contact({ "firstName": "Michael", "class": "อนุบาล", "classId": "04", "roomId": "1", "lastName": "Fold", "company": "1+1", "email": "slevoc@umail.com", "city": "Kiev", isFavorite: true }),
+			new Contact({ "firstName": "Ann", "class": "อนุบาล", "classId": "04", "roomId": "2", "lastName": "Ryder", "company": "95 Style", "email": "ryder@umail.com", "city": "Kiev" }),
+			new Contact({ "firstName": "Andrew", "class": "อนุบาล", "classId": "04", "roomId": "2", "lastName": "Smith", "company": "Cycle", "phone": "+380631234567", "email": "drakula@umail.com", "city": "Kiev", lat: 14.724015, long: 100.559236 }),
+			new Contact({ "firstName": "Olga", "class": "อนุบาล", "classId": "04", "roomId": "3", "lastName": "Blare", "company": "Finance Time", "phone": "+380631234566", "email": "olga@umail.com", "city": "Kiev" }),
+			new Contact({ "firstName": "Svetlana", "class": "อนุบาล", "classId": "04", "roomId": "3", "lastName": "Kot", "company": "Global Think", "phone": "+380631234567", "email": "kot@umail.com", "city": "Odessa" }),
+			new Contact({ "firstName": "Kate", "class": "อนุบาล", "classId": "04", "roomId": "3", "lastName": "Lebedeva", "company": "Samsung", "phone": "+380631234568", "email": "kate@umail.com", "city": "Kiev" }),
+			new Contact({ "firstName": "Oleg", "class": "ม", "classId": "10", "roomId": "2", "lastName": "Price", "company": "Unilever", "phone": "+380631234568", "email": "uni@umail.com", "city": "Praha", isFavorite: true }),
+			new Contact({ "firstName": "Ivan", "class": "ม", "classId": "10", "roomId": "2", "lastName": "Ivanov", "company": "KGB", "phone": "+380631234570", "email": "agent@umail.com", "city": "Moscow" }),
+			new Contact({ "firstName": "Nadya", "class": "ม", "classId": "10", "roomId": "2", "lastName": "Lovin", "company": "Global Think", "phone": "+380631234567", "email": "kot@umail.com", "city": "Odessa" }),
+			new Contact({ "firstName": "Alex", "class": "ม", "classId": "10", "roomId": "2", "lastName": "Proti", "company": "Samsung", "phone": "+380631234568", "email": "kate@umail.com", "city": "Kiev", lat: 15.719688, long: 100.600481 }),
+			new Contact({ "firstName": "Oleg", "class": "ม", "classId": "10", "roomId": "1", "lastName": "Ryzhkov", "company": "Unilever", "phone": "+380631234568", "email": "uni@umail.com", "city": "Praha", isFavorite: true }),
+			new Contact({ "firstName": "Daniel", "class": "ม", "classId": "10", "roomId": "1", "lastName": "Ricci", "company": "Finni", "phone": "+380631234570", "email": "agent@umail.com", "city": "Milan" })
         ];
         localStorage.setItem("f7Contacts", JSON.stringify(contacts));
         return JSON.parse(localStorage.getItem("f7Contacts"));

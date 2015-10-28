@@ -3,10 +3,14 @@
     function Contact(values) {
 		values = values || {};
 		this.id = values['id'] || app.utils.generateGUID();
-		this.picId = values['picId'] || app.utils.getRandomInt(1,10);
+		this.picId = values['picId'] || app.utils.getRandomInt(1, 10);
+		this.pic = values['pic'] || '';
 		this.createdOn = values['createdOn'] || new Date();
+		this.CID = values['CID'] || null;
+		this.studentId = values['studentId'] || 1;
 		this.class = values['class'] || 'อนุบาล';
-		this.room = values['room'] || 1;
+		this.classId = values['classId'] || '01';
+		this.roomId = values['roomId'] || 1;
 		this.firstName = values['firstName'] || '';
 		this.lastName = values['lastName'] || '';
 		this.company = values['company'] || '';
