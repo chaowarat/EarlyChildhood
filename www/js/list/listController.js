@@ -112,11 +112,8 @@
             }
             else if (value == menu.length - 1) { // logout
                 app.f7.showIndicator();
-                localStorage.removeItem('f7Contacts');
-                localStorage.removeItem('memo');
-                localStorage.removeItem('rooms');
-                localStorage.removeItem('user');
-                setTimeout(function () { app.f7.hideIndicator(); app.f7.loginScreen(); }, 1000);
+                localStorage.clear();
+                setTimeout(function () { app.f7.hideIndicator(); location.reload(); }, 1000);
             }
             else if (value == menu.length - 2) { // formEdit
                 app.router.load('formTemplate');
