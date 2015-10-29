@@ -21,7 +21,7 @@ define(["app", "js/contactModel", "js/sync/syncView"], function (app, Contact, V
 	    handler: closeRightPanel
 	}];
 
-    var model = { 'updateTime': '11/22/33 44.55', rooms: [{ id:'011', classId: '01', roomId: '1', text: 'อนุบาล 1' }] };
+    var model = { 'updateTime': null, rooms: [] };
 
     function init(query) {
         loadModel();
@@ -149,6 +149,7 @@ define(["app", "js/contactModel", "js/sync/syncView"], function (app, Contact, V
     }
 
     function backClick() {
+        app.router.load('list');
         closePage();
     }
 

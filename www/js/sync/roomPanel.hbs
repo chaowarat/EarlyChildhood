@@ -1,12 +1,23 @@
 <ul>
-  {{#each model}}
-  <li class="item-content" data-value="{{id}}">
-    <div class="item-inner" data-value="{{id}}">
-      <div class="item-title-row" data-value="{{id}}">
-        <div class="item-title" data-value="{{id}}">{{text}}</div>
-      </div>
-      <div class="item-subtitle" data-value="{{id}}">ดูรายชื่อ</div>
-    </div>
-  </li>
-  {{/each}}
+    {{#if model}}
+        {{#each model}}
+        <li class="item-content" data-value="{{id}}">
+            <div class="item-inner" data-value="{{id}}">
+                <div class="item-title-row" data-value="{{id}}">
+                    <div class="item-title" data-value="{{id}}">{{text}}</div>
+                </div>
+                <div class="item-subtitle" data-value="{{id}}">ดูรายชื่อ</div>
+            </div>
+        </li>
+        {{/each}}
+    {{/if}}
+    {{#unless model}}
+        <li class="item-content">
+            <div class="item-inner">
+                <div class="item-title-row">
+                    <div class="item-title">ไม่พบข้อมูลชั้นที่สอน</div>
+                </div>
+            </div>
+        </li>
+    {{/unless}}
 </ul>

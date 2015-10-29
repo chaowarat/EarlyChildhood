@@ -13,7 +13,12 @@ define(['app', 'hbs!js/sync/sync', 'hbs!js/sync/roomPanel', 'hbs!js/sync/rightPa
 	        $('.sync-content').html(room({ model: params.model.rooms }));
 	    }
 	    bindEvents(params.bindings);
-	    $('.update-time-text').text('ข้อมูลวันที่ : ' + params.model.updateTime);
+	    if (params.model.updateTime) {
+	        $('.update-time-text').text('ข้อมูลวันที่ : ' + params.model.updateTime);
+	    }
+	    else {
+	        $('.update-time-text').text('อัพเดทข้อมูล');
+	    }
 	}
 
 	function renderRight(room, model) {
