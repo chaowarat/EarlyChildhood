@@ -2,7 +2,7 @@ define(['app', 'hbs!js/list/contact-list-item', 'hbs!js/list/contact-list-menu']
     var $ = Dom7;
 
     function render(params) {
-        $('.list-block .list-group ul').html(menu(params));
+        $('#menuPanel .list-group ul').html(menu(params));
         $('.contacts-list ul').html(template(params.model));
         $('.searchbar-cancel').click();
         setHeaderText(params.header);

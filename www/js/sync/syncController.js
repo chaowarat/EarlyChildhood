@@ -6,12 +6,12 @@ define(["app", "js/contactModel", "js/sync/syncView"], function (app, Contact, V
         handler: backClick
     },
 	{
-	    element: '.pull-to-refresh-content',
+	    element: '.page-content.pull-to-refresh-content',
 	    event: 'refresh',
 	    handler: syncData
 	},
 	{
-	    element: '.item-content',
+	    element: '.room-item',
 	    event: 'click',
 	    handler: roomClick
 	},
@@ -19,13 +19,61 @@ define(["app", "js/contactModel", "js/sync/syncView"], function (app, Contact, V
 	    element: '.panel-close',
 	    event: 'click',
 	    handler: closeRightPanel
+	}, {
+	    element: '.upload-answer',
+	    event: 'click',
+	    handler: uploadAnswer
 	}];
 
     var model = { 'updateTime': null, rooms: [] };
 
     function init(query) {
         loadModel();
-        View.render({ model: model, bindings: bindings });
+        View.render({ model: model, bindings: bindings, unSync: countUnSync(), contactUnSync: contactUnSync()});
+    }
+
+    function countUnSync() {
+        return app.utils.getAnswers().length;
+    }
+
+    function uploadAnswer(e) {
+        var answerId = e.target.getAttribute('data-value');
+        var _data = {'data': answerId}
+        var _url = 'http://private-edu.azurewebsites.net/webservices/getservice.svc/postTemplate';
+        Dom7.ajax({
+            url: _url,
+            method: 'POST',
+            data: JSON.stringify(_data),
+            contentType: "application/x-www-form-urlencoded",
+            dataType: 'json',            
+            success: function (msg) {
+                console.log(msg)
+            },
+            error: function (error) {
+                console.log(error)
+                app.f7.alert(error.statusText + ' โปรดติดต่อผู้ดูแลระบบ');
+                app.f7.pullToRefreshDone();
+            }
+        });
+    }
+
+    function contactUnSync() {
+        var f7Contacts = localStorage.getItem("f7Contacts");
+        var contacts = f7Contacts ? JSON.parse(f7Contacts) : tempInitializeStorage();
+        var answers = app.utils.getAnswers();
+        var result = [];
+        for (var i = 0; i < answers.length; i++) {
+            for (var j = 0; j < contacts.length; j++) {
+                if (answers[i].personId == contacts[j].id) {
+                    var tmp = contacts[j];
+                    tmp['answerId'] = answers[i].id;
+                    result.push(tmp);
+                }
+            }
+        }
+        result.sort(contactSort);
+        result = _.map(result, function (value) { return { name: value.firstName + ' ' + value.lastName, id: value.answerId } });
+        return result;
     }
 
     function loadModel() {
@@ -35,7 +83,7 @@ define(["app", "js/contactModel", "js/sync/syncView"], function (app, Contact, V
         }
     }
 
-    function syncData() {        
+    function syncData() {
         app.f7.confirm('', 'อัพเดทข้อมูลหรือไม่?',
             function () {
                 setTimeout(function () {
@@ -87,7 +135,7 @@ define(["app", "js/contactModel", "js/sync/syncView"], function (app, Contact, V
                                 localStorage.setItem("f7Contacts", JSON.stringify(contacts));
                                 app.router.load('list');
                                 app.f7.pullToRefreshDone();
-                                View.render({ model: model, bindings: bindings });
+                                View.render({ model: model, bindings: bindings, unSync: countUnSync(), contactUnSync: contactUnSync() });
                             }
                             else {
                                 app.f7.alert(response.errorMessage);

@@ -8,7 +8,7 @@ define(['app', 'hbs!js/sync/sync', 'hbs!js/sync/roomPanel', 'hbs!js/sync/rightPa
 	        $('.sync-content').html(template);	        
 	    }
 	    else { // load new
-	        var template = newForm();
+	        var template = newForm({contactUnSync: params.contactUnSync});
 	        app.f7.popup(template);
 	        $('.sync-content').html(room({ model: params.model.rooms }));
 	    }
@@ -19,6 +19,7 @@ define(['app', 'hbs!js/sync/sync', 'hbs!js/sync/roomPanel', 'hbs!js/sync/rightPa
 	    else {
 	        $('.update-time-text').text('อัพเดทข้อมูล');
 	    }
+	    $('.badge').text(params.unSync);
 	}
 
 	function renderRight(room, model) {

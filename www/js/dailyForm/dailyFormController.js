@@ -124,12 +124,7 @@
 	}
 
 	function closePage() {
-		if (!state.isNew) {
-			app.router.load('contact', {id: contact.id});
-		}
-		else {
-			app.mainView.loadPage('contact.html?id=' + contact.id, false);
-		}
+	    app.router.load('list');
 		app.f7.closeModal();
 	}
 

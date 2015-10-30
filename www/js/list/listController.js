@@ -3,7 +3,7 @@
     var menu = [];
 
     var bindings = [{
-        element: '.list-group li',
+        element: '.list-group li.contact-item',
         event: 'click',
         handler: openContact
     }];
@@ -33,6 +33,10 @@
             loginCallback: login,
             header: getHeaderName(0)
         });        
+    }
+
+    function countUnSync() {
+        return app.utils.getAnswers().length;
     }
 
     function login(user, pass) {
@@ -76,7 +80,7 @@
         for (i = 0; i < rooms.length; i++) {
             menu.push({ id: (i + 1), text: rooms[i], value: rooms[i], icon: 'icon ion-clipboard' });
         }
-        menu.push({ id: rooms.length + 1, text: 'จัดการข้อมูล', value: '' + (rooms.length + 1), icon: 'icon ion-loop' });
+        menu.push({ id: rooms.length + 1, text: 'จัดการข้อมูล', value: '' + (rooms.length + 1), icon: 'icon ion-loop', unSync: countUnSync() });
         menu.push({ id: rooms.length + 2, text: 'ตั้งค่าแบบฟอร์ม', value: '' + (rooms.length + 2), icon: 'icon ion-settings' });
         menu.push({ id: rooms.length + 3, text: 'ออกจากระบบ', value: '' + (rooms.length + 3), icon: 'icon ion-log-in' });
     }

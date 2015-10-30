@@ -11,17 +11,81 @@
     </div>
 
     <div class="page">
-      <div class="page-content pull-to-refresh-content">
-        <div class="list-block-label" style="text-align:center;margin-top:50px">
-          <p class="update-time-text"></p>
+
+      <div class="toolbar tabbar tabbar-labels">
+        <div class="toolbar-inner">
+          <a href="#tab1" class="tab-link active">
+            <i class="icon ion-cube" style="font-size: 30px;"></i>
+            <span class="tabbar-label">ฐานข้อมูล</span>
+          </a>
+          <a href="#tab2" class="tab-link">
+            <i class="icon ion-earth" style="font-size: 30px;">
+              <span class="badge" style="background-color:orange">5</span>
+            </i>
+            <span class="tabbar-label">แจ้งเตือน</span>
+          </a>
         </div>
-        <div class="pull-to-refresh-layer" style="margin-top:-80px">
-          <div class="preloader"></div>
-          <div class="pull-to-refresh-arrow"></div>
-        </div>
-        <div class="content-block-title">ชั้นที่สอน</div>
-        <div class="list-block sync-content"></div>
       </div>
+
+      <div class="page-content tabs">
+        <div id="tab1" class="tab active">
+          <div class="content-block">
+            <div class="page-content pull-to-refresh-content">
+              <div class="list-block-label" style="text-align:center;margin-top:-40px">
+                <p class="update-time-text"></p>
+              </div>
+              <div class="pull-to-refresh-layer" style="margin-top:-75px">
+                <div class="preloader"></div>
+                <div class="pull-to-refresh-arrow"></div>
+              </div>
+              <div class="content-block-title">ชั้นที่สอน</div>
+              <div class="list-block sync-content"></div>
+            </div>
+          </div>
+        </div>
+        <!-- Tab 2 -->
+        <div id="tab2" class="tab">
+          <div class="content-block">
+            {{#if contactUnSync}}
+            <div class="content-block-title">ข้อมูลที่ยังไม่ได้ส่งเข้าระบบ</div>
+            <div class="list-block unSync-list">
+              <div class="list-group unSync-list">
+                <ul>
+                  <li class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title-row">
+                        <div class="item-title"></div>
+                      </div>
+                      <div class="item-subtitle">
+                        <a href="#" class="item-link list-button">อัพโหลดทั้งหมด</a>
+                      </div>
+                    </div>
+                  </li>
+
+                  {{#each contactUnSync}}
+                  <li class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title-row">
+                        <div class="item-title">{{name}}</div>
+                      </div>
+                      <div class="item-subtitle">
+                        <a href="#" class="item-link list-button upload-answer" data-value="{{id}}">อัพโหลด</a>
+                      </div>
+                    </div>
+                  </li>
+                  {{/each}}
+
+                </ul>
+              </div>
+            </div>
+            {{/if}}
+            {{#unless contactUnSync}}
+            <div class="content-block-title">ไม่พบข้อมูลที่ยังไม่ได้ส่งเข้าระบบ</div>
+            {{/unless}}
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <div class="panel-overlay"></div>
