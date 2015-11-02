@@ -7,8 +7,8 @@ define(['app', 'hbs!js/sync/sync', 'hbs!js/sync/roomPanel', 'hbs!js/sync/rightPa
 	        removeEvents(params.bindings);
 	        $('.sync-content').html(template);	        
 	    }
-	    else { // load new
-	        var template = newForm({contactUnSync: params.contactUnSync});
+	    else { // load new	        
+	        var template = newForm({ contactUnSync: params.contactUnSync });
 	        app.f7.popup(template);
 	        $('.sync-content').html(room({ model: params.model.rooms }));
 	    }
@@ -19,7 +19,14 @@ define(['app', 'hbs!js/sync/sync', 'hbs!js/sync/roomPanel', 'hbs!js/sync/rightPa
 	    else {
 	        $('.update-time-text').text('อัพเดทข้อมูล');
 	    }
-	    $('.badge').text(params.unSync);
+	    if (params.unSync > 0) {
+	        $('.badge').text(params.unSync);
+	        $('.badge').show();
+	    }
+	    else {
+	        console.log($('.badge'))
+	        $('.badge').hide();
+	    }
 	}
 
 	function renderRight(room, model) {
