@@ -177,50 +177,13 @@
     }
 
     function templateInitializeStorage() {
-        var templates = [
-        {
-            id: '001', name: 'แบบฟอร์มที่ 1', content: '',
-            data: [
-                {
-                    sectionId: 1, sectionName: 'ด้านที่ 1',
-                    data: [
-                        {
-                            qText: 'การดื่มนม', qId: '01', qNo: 1,
-                            answer: [
-                                { aText: 'ปฏิบัติได้ดีโดยไม่ต้องตักเตือน', aValue: '3', checked: true },
-                                { aText: 'มีการตักเตือนในบางครั้ง', aValue: '2' },
-                                { aText: 'ยังปฏิบัติด้วยตนเองไม่ได้', aValue: '1' }
-                            ]
-                        },
-                        {
-                            qText: 'การรับประทานอาหาร', qId: '02', qNo: 2,
-                            answer: [
-                                { aText: 'ปฏิบัติได้ดีโดยไม่ต้องตักเตือน', aValue: '3', checked: true },
-                                { aText: 'มีการตักเตือนในบางครั้ง', aValue: '2' },
-                                { aText: 'ยังปฏิบัติด้วยตนเองไม่ได้', aValue: '1' }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    sectionId: 2, sectionName: 'ด้านที่ 2',
-                    data: [
-                        {
-                            qText: 'การนอน', qId: '03', qNo: 1,
-                            answer: [
-                                { aText: 'ปฏิบัติได้ดีโดยไม่ต้องตักเตือน', aValue: '3', checked: true },
-                                { aText: 'มีการตักเตือนในบางครั้ง', aValue: '2' },
-                                { aText: 'ยังปฏิบัติด้วยตนเองไม่ได้', aValue: '1' }
-                            ]
-                        }
-                    ]
-                }
-            ], selected: true
-        },
-        { id: '002', name: 'แบบฟอร์มที่ 2', content: '', data: [] }
-        ];
+        var templates = [{
+            id: app.utils.generateGUID(), name: 'แบบฟอร์มพื้นฐาน', content: '',
+            template: JSON.parse(defaultTemplate),
+            selected: true
+        }];
         for (var i = 0; i < templates.length; i++) {            
-            templates[i].content = generateContent(templates[i].data);
+            templates[i].content = generateContent(templates[i].template.data);
         }
         localStorage.setItem("templates", JSON.stringify(templates));
     }
@@ -228,14 +191,11 @@
     function generateContent(data) {
         var text = '';
         for (var i = 0; i < data.length; i++) {
-            text += data[i].sectionName + ' ';
-            
-            for (var j = 0; j < data[i].data.length && j < 3; j++) {
-                text += data[i].data[j].qText + '...';
+            var line = data[i].text + ' ';
+            if (data[i].details.length > 0) {
+                line += data[i].details[0].text.substring(0, 50 - line.length) + '...';
             }
-            if (i < data.length - 1) {
-                text += '<br>';
-            }
+            text += line + '<br>';
         }
         if (text.length == 0) {
             text = '...ไม่พบข้อมูลแบบฟอร์ม...';
