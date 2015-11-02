@@ -23,6 +23,10 @@ define(["app", "js/contactModel", "js/sync/syncView"], function (app, Contact, V
 	    element: '.upload-answer',
 	    event: 'click',
 	    handler: uploadAnswer
+	}, {
+	    element: '.upload-all',
+	    event: 'click',
+	    handler: uploadAllAnswer
 	}];
 
     var model = { 'updateTime': null, rooms: [] };
@@ -39,6 +43,13 @@ define(["app", "js/contactModel", "js/sync/syncView"], function (app, Contact, V
         return app.utils.getAnswers().length;
     }
 
+    function uploadAllAnswer() {
+        var contacts = contactUnSync();
+        for (var i = 0; i < contacts.length; i++) {
+            document.getElementById(contacts[i].id).click();
+        }
+    }
+
     function uploadAnswer(e) {
         e.target.style.display = 'none';
         e.target.nextElementSibling.style.display = '';
@@ -53,8 +64,15 @@ define(["app", "js/contactModel", "js/sync/syncView"], function (app, Contact, V
             dataType: 'json',            
             success: function (msg) {
                 e.target.nextElementSibling.style.display = 'none';
-                e.target.style.display = '';
-                console.log(msg)
+                e.target.innerText = '';
+                e.target.style.display = 'block';
+                var icon = document.createElement("i");
+                icon.className = 'icon ion-checkmark';
+                e.target.appendChild(icon);
+                setTimeout(function () {
+                    e.target.parentElement.parentElement.parentElement.remove();
+                }, 1000);
+                console.log(msg);
             },
             error: function (error) {
                 console.log(error)
