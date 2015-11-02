@@ -16,24 +16,33 @@
 
             {{#each model}}
             <div class="swiper-slide">
-              <div class="content-block-title">{{sectionName}}</div>
-              <div class="list-block">
-                <ul>
-                  {{#each data}}
-                  <li>
-                    <label class="label-checkbox item-content">
-                      <input type="checkbox" section="{{../sectionId}}" value="{{qId}}" />
-                      <div class="item-media">
-                        <i class="icon icon-form-checkbox"></i>
-                      </div>
-                      <div class="item-inner">
-                        <div class="item-title">{{qText}}</div>
-                      </div>
-                    </label>
-                  </li>
-                  {{/each}}
-                </ul>
-              </div>
+              <div class="content-block-title" style="text-align:center">{{sectionName}}</div>
+                <div class="list-block">
+                    <div class="list-group">
+                        <ul>
+                            {{#each data}}
+                            {{#if isQuestion}}
+                            {{#each answers}}
+                            <li>
+                                <label class="label-checkbox item-content">
+                                    <input type="checkbox" section="{{../id}}" value="{{id}}" />
+                                    <div class="item-media">
+                                        <i class="icon icon-form-checkbox"></i>
+                                    </div>
+                                    <div class="item-inner">
+                                        <div class="item-title">{{text}}</div>
+                                    </div>
+                                </label>
+                            </li>
+                            {{/each}}
+                            {{/if}}
+                            {{#unless answer}}
+                            <div class="content-block-title">{{text}}</div>
+                            {{/unless}}
+                            {{/each}}
+                        </ul>
+                    </div>
+                </div>
             </div>
             {{/each}}
 

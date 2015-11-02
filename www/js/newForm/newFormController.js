@@ -6,40 +6,73 @@
 	    handler: backClick
 	}];
 
-	var sections = [
-        {
-            sectionId: 1, sectionName: 'ด้านที่ 1',
-            data: [
-                {
-                    qText: 'การดื่มนม', qId: '01', qNo: 1
-                },
-                {
-                    qText: 'การรับประทานอาหาร', qId: '02', qNo: 2
-                }
-            ]
-        },
-        {
-            sectionId: 2, sectionName: 'ด้านที่ 2',
-            data: [
-                {
-                    qText: 'การดื่มนม', qId: '01', qNo: 1
-                },
-                {
-                    qText: 'การรับประทานอาหาร', qId: '02', qNo: 2
-                }
-            ]
-        }
-	];
+	var sections = [];
+	var defaultAnswers = [];
     
 	function init(query) {
+	    defaultForm();
 	    var mySwiper = app.f7.swiper('.swiper-container', {
 	        pagination: '.swiper-pagination'
 	    });
 	    View.render({ model: sections, bindings: bindings, doneCallback: saveTemplate});
 	}
 
+	function defaultForm() {
+	    var answers = JSON.parse(defaultTemplate);
+	    defaultAnswers = answers.answers;
+
+	    sections = [];
+	    var templates = JSON.parse(localStorage.getItem("templates"));
+	    var data = null;
+	    if (templates) {
+	        for (var i = 0; i < templates.length; i++) {
+	            if (templates[i]['selected'] == true) {
+	                data = templates[i].template.data; break;
+	            }
+	        }
+	    }
+	    if (data) {
+	        for (var i = 0; i < data.length; i++) {
+	            sections.push({
+	                sectionId: (i + 1), sectionName: data[i].text,
+	                data: reFormat(data[i].details)
+	            });
+	        }
+	    }
+	}
+
+	function reFormat(data) {
+	    var array = [];
+	    for (var i = 0; i < data.length; i++) {
+	        if (data[i].isQuestion) {
+	            array.push({ id: data[i].id, text: data[i].text, isQuestion: data[i].isQuestion, answers: defaultAnswers });
+	        }
+	        else {
+	            array.push({ id: data[i].id, text: data[i].text, isQuestion: data[i].isQuestion });
+	        }
+	        var tmp = data[i].details;
+	        for (var j = 0; j < tmp.length; j++) {
+	            if (tmp[j].isQuestion) {
+	                array.push({ id: tmp[j].id, text: tmp[j].text, isQuestion: tmp[j].isQuestion, answers: defaultAnswers });
+	            }
+	            else {
+	                array.push({ id: tmp[j].id, text: tmp[j].text, isQuestion: tmp[j].isQuestion });
+	            }	            
+	            var tmp2 = tmp[j].details;
+	            for (var k = 0; k < tmp2.length; k++) {
+	                if (tmp2[k].isQuestion) {
+	                    array.push({ id: tmp2[k].id, text: tmp2[k].text, isQuestion: tmp2[k].isQuestion, answers: defaultAnswers });
+	                }
+	                else {
+	                    array.push({ id: tmp2[k].id, text: tmp2[k].text, isQuestion: tmp2[k].isQuestion });
+	                }	                
+	            }
+	        }
+	    }
+	    return array;
+	}
+
 	function backClick() {
-	    //localStorage.setItem(templateId, JSON.stringify(template));
 	    app.f7.closeModal('#newFormModal');
 	}
 
