@@ -32,11 +32,16 @@ define(["app", "js/contactModel", "js/sync/syncView"], function (app, Contact, V
         View.render({ model: model, bindings: bindings, unSync: countUnSync(), contactUnSync: contactUnSync()});
     }
 
+    /////////////////////////////////////////////////////////////////////////////
+    ////// function for notification tab
+    /////////////////////////////////////////////////////////////////////////////
     function countUnSync() {
         return app.utils.getAnswers().length;
     }
 
     function uploadAnswer(e) {
+        e.target.style.display = 'none';
+        e.target.nextElementSibling.style.display = '';
         var answerId = e.target.getAttribute('data-value');
         var _data = {'data': answerId}
         var _url = 'http://private-edu.azurewebsites.net/webservices/getservice.svc/postTemplate';
@@ -47,6 +52,8 @@ define(["app", "js/contactModel", "js/sync/syncView"], function (app, Contact, V
             contentType: "application/x-www-form-urlencoded",
             dataType: 'json',            
             success: function (msg) {
+                e.target.nextElementSibling.style.display = 'none';
+                e.target.style.display = '';
                 console.log(msg)
             },
             error: function (error) {
@@ -75,6 +82,10 @@ define(["app", "js/contactModel", "js/sync/syncView"], function (app, Contact, V
         result = _.map(result, function (value) { return { name: value.firstName + ' ' + value.lastName, id: value.answerId } });
         return result;
     }
+
+    /////////////////////////////////////////////////////////////////////////////
+    ////// function for database tab
+    /////////////////////////////////////////////////////////////////////////////
 
     function loadModel() {
         var tmp = JSON.parse(localStorage.getItem("rooms"));

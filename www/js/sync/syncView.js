@@ -24,7 +24,6 @@ define(['app', 'hbs!js/sync/sync', 'hbs!js/sync/roomPanel', 'hbs!js/sync/rightPa
 	        $('.badge').show();
 	    }
 	    else {
-	        console.log($('.badge'))
 	        $('.badge').hide();
 	    }
 	}
