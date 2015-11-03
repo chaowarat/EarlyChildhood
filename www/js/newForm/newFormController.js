@@ -7,7 +7,6 @@
 	}];
 
 	var sections = [];
-	var defaultAnswers = [];
     
 	function init(query) {
 	    defaultForm();
@@ -18,58 +17,24 @@
 	}
 
 	function defaultForm() {
-	    var answers = JSON.parse(defaultTemplate);
-	    defaultAnswers = answers.answers;
-
 	    sections = [];
-	    var templates = JSON.parse(localStorage.getItem("templates"));
+	    var templates = JSON.parse(localStorage.getItem("templates"));        
 	    var data = null;
 	    if (templates) {
 	        for (var i = 0; i < templates.length; i++) {
-	            if (templates[i]['selected'] == true) {
-	                data = templates[i].template.data; break;
+	            if (templates[i]['isDefault'] == true) {
+	                data = templates[i].template; break;
 	            }
 	        }
 	    }
 	    if (data) {
 	        for (var i = 0; i < data.length; i++) {
 	            sections.push({
-	                sectionId: (i + 1), sectionName: data[i].text,
-	                data: reFormat(data[i].details)
+	                sectionId: (i + 1), sectionName: data[i].text, id: data[i].id,
+	                data: data[i].details
 	            });
 	        }
 	    }
-	}
-
-	function reFormat(data) {
-	    var array = [];
-	    for (var i = 0; i < data.length; i++) {
-	        if (data[i].isQuestion) {
-	            array.push({ id: data[i].id, text: data[i].text, isQuestion: data[i].isQuestion, answers: defaultAnswers });
-	        }
-	        else {
-	            array.push({ id: data[i].id, text: data[i].text, isQuestion: data[i].isQuestion });
-	        }
-	        var tmp = data[i].details;
-	        for (var j = 0; j < tmp.length; j++) {
-	            if (tmp[j].isQuestion) {
-	                array.push({ id: tmp[j].id, text: tmp[j].text, isQuestion: tmp[j].isQuestion, answers: defaultAnswers });
-	            }
-	            else {
-	                array.push({ id: tmp[j].id, text: tmp[j].text, isQuestion: tmp[j].isQuestion });
-	            }	            
-	            var tmp2 = tmp[j].details;
-	            for (var k = 0; k < tmp2.length; k++) {
-	                if (tmp2[k].isQuestion) {
-	                    array.push({ id: tmp2[k].id, text: tmp2[k].text, isQuestion: tmp2[k].isQuestion, answers: defaultAnswers });
-	                }
-	                else {
-	                    array.push({ id: tmp2[k].id, text: tmp2[k].text, isQuestion: tmp2[k].isQuestion });
-	                }	                
-	            }
-	        }
-	    }
-	    return array;
 	}
 
 	function backClick() {
@@ -77,28 +42,25 @@
 	}
 
 	function saveTemplate(inputValues, name, detail) {
-	    var template = { id: app.utils.generateGUID(), name: name, content: detail, data: [], selected: true };
-	    var _data = sections.slice();
-	    for (var i = 0; i < inputValues.length; i++) {
-	        var _sectionId = inputValues[i].getAttribute('section');
-	        for (var j = 0; j < _data.length; j++) {
-	            if (_data[j].sectionId == _sectionId) {
-	                var index = -1;
-	                for (var k = 0; k < _data[j].data.length; k++) {
-	                    if (_data[j].data[k].qId == inputValues[i].value && !inputValues[i].checked) {
-	                        index = k;
-	                        break;
-	                    }
-	                }
-
-	                if (index != -1) {
-	                    _data[j].data.splice(index, 1);
-	                }
-	                break;
-	            }
-	        }
+	    var template = { id: app.utils.generateGUID(), name: name, content: detail, template: [], selected: true };
+	    var _data = [];
+	    for (var i = 0; i < sections.length; i++) {
+	        _data.push({ id: sections[i].id, isQuestion: false, text: sections[i].sectionName, details: [] });
 	    }
-	    template.data = _data;
+	    for (var i = 0; i < inputValues.length; i++) {
+	        if (inputValues[i].checked) {
+	            var _sectionId = inputValues[i].getAttribute('section');
+	            var _id = inputValues[i].getAttribute('value');
+	            var _text = inputValues[i].getAttribute('data-text');
+	            for (var j = 0; j < _data.length; j++) {
+	                if (_data[j].id == _sectionId) {
+	                    _data[j].details.push({ id: _id, isQuestion: true, text: _text });
+	                    break;
+	                }
+	            }
+	        }	        
+	    }
+	    template.template = _data;;
 	    var templates = JSON.parse(localStorage.getItem("templates"));
 	    if (templates) {
 	        for (var i = 0; i < templates.length; i++) {

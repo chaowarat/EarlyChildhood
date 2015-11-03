@@ -10,40 +10,40 @@
       </div>
     </div>
     <div class="page">
-      <div class="page-content contact-edit-form">
+      <div class="page-content new-form">
         <div style="height:100%" class="swiper-container swiper-init" data-speed="400" data-space-between="40" data-pagination=".swiper-pagination">
           <div class="swiper-wrapper">
 
             {{#each model}}
-            <div class="swiper-slide">
-              <div class="content-block-title" style="text-align:center">{{sectionName}}</div>
-                <div class="list-block">
-                    <div class="list-group">
-                        <ul>
-                            {{#each data}}
-                            {{#if isQuestion}}
-                            {{#each answers}}
-                            <li>
-                                <label class="label-checkbox item-content">
-                                    <input type="checkbox" section="{{../id}}" value="{{id}}" />
-                                    <div class="item-media">
-                                        <i class="icon icon-form-checkbox"></i>
-                                    </div>
-                                    <div class="item-inner">
-                                        <div class="item-title">{{text}}</div>
-                                    </div>
-                                </label>
-                            </li>
-                            {{/each}}
-                            {{/if}}
-                            {{#unless answer}}
-                            <div class="content-block-title">{{text}}</div>
-                            {{/unless}}
-                            {{/each}}
-                        </ul>
-                    </div>
-                </div>
-            </div>
+              <div class="swiper-slide">
+                  <div class="content-block-title" style="text-align:center" section="{{id}}">{{sectionName}}</div>
+                  <div class="page-content swiper-list" style="padding-bottom:150px;">
+                      <div class="list-block" style="margin-top:-60px">
+                          <div class="list-group">
+                              <ul>
+                                  {{#each data}}
+                                  {{#if isQuestion}}
+                                  <li>
+                                      <label class="label-checkbox item-content">
+                                          <input type="checkbox" section="{{../../id}}" value="{{id}}" data-text="{{text}}"/>
+                                          <div class="item-media">
+                                              <i class="icon icon-form-checkbox"></i>
+                                          </div>
+                                          <div class="item-inner">
+                                              <div class="item-title">{{text}}</div>
+                                          </div>
+                                      </label>
+                                  </li>
+                                  {{/if}}
+                                  {{#unless isQuestion}}
+                                  <div class="content-block-title" section="{{../id}}">{{text}}</div>
+                                  {{/unless}}
+                                  {{/each}}
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+              </div>
             {{/each}}
 
             <div class="swiper-slide">

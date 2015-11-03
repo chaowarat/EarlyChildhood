@@ -179,23 +179,47 @@
     function templateInitializeStorage() {
         var templates = [{
             id: app.utils.generateGUID(), name: 'แบบฟอร์มพื้นฐาน', content: '',
-            template: JSON.parse(defaultTemplate),
-            selected: true
-        }];
+            template: reFormat((JSON.parse(defaultTemplate)).data),
+            selected: true,
+            isDefault: true
+        }];        
         for (var i = 0; i < templates.length; i++) {            
-            templates[i].content = generateContent(templates[i].template.data);
+            templates[i].content = generateContent(templates[i].template);
         }
         localStorage.setItem("templates", JSON.stringify(templates));
     }
 
-    function generateContent(data) {
-        var text = '';
-        for (var i = 0; i < data.length; i++) {
-            var line = data[i].text + ' ';
-            if (data[i].details.length > 0) {
-                line += data[i].details[0].text.substring(0, 50 - line.length) + '...';
+    function reFormat(data) {        
+        var array = [];
+        for (var i = 0; i < data.length; i++) { // section
+            var sections = [];
+            var tmp = data[i].details;
+            for (var j = 0; j < tmp.length; j++) { // level 1
+                sections.push({ id: tmp[j].id, text: tmp[j].text, isQuestion: tmp[j].isQuestion });
+                var tmp2 = tmp[j].details;
+                for (var k = 0; k < tmp2.length; k++) { // level 2
+                    sections.push({ id: tmp2[k].id, text: tmp2[k].text, isQuestion: tmp2[k].isQuestion });
+                    var tmp3 = tmp2[k].details;
+                    for (var l = 0; l < tmp3.length; l++) { // level 3 = question
+                        sections.push({ id: tmp3[l].id, text: tmp3[l].text, isQuestion: tmp3[l].isQuestion });
+                    }
+                }
             }
-            text += line + '<br>';
+            array.push({ id: data[i].id, text: data[i].text, isQuestion: false, details: sections });
+        }
+        return array;
+    }
+
+    function generateContent(data) {
+        var text = '', line = '';
+        for (var i = 0; i < data.length; i++) {
+            line = data[i].text + '<br>';
+            var index = 0;
+            while (index < 3) {
+                line += '&nbsp&nbsp&nbsp&nbsp' + data[i].details[index].text.substring(0, 40) + '...<br>';
+                index++;
+            }
+            text += line;
         }
         if (text.length == 0) {
             text = '...ไม่พบข้อมูลแบบฟอร์ม...';
