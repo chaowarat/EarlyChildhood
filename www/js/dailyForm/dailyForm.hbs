@@ -1,89 +1,76 @@
 <div class="popup tablet-fullscreen">
-  <div class="view view-popup navbar-fixed">
-    <div class="navbar">
-      <div class="navbar-inner">
-        <div class="left">
-          <a href="#" class="back link close-popup">
-            <i class="icon icon-back"></i>กิจวัตรประจำวัน
-          </a>
+    <div class="view view-popup navbar-fixed">
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="left">
+                    <a href="#" class="back link close-popup">
+                        <i class="icon icon-back"></i>กิจวัตรประจำวัน
+                    </a>
+                </div>
+                <div class="right contact-save-link">
+                    <a href="#" class="link">บันทึก</a>
+                </div>
+            </div>
         </div>
-        <div class="right contact-save-link">
-          <a href="#" class="link">บันทึก</a>
+        <div class="page">
+            <div class="page-content contact-edit-form">
+                <div class="contact-header">
+                    <div class="item-photo">
+                        <img src="img/cats/{{model.picId}}.png" />
+                    </div>
+                    <div class="header-text">
+                        {{#if model.isFavorite}}<i class="icon icon-favorite ion-star"></i>{{/if}}
+                        <h3>{{model.firstName}} {{model.lastName}}</h3>
+                        <p>{{model.company}}</p>
+                    </div>
+                </div>
+
+                {{#unless data}}
+                <h3>ยังไม่ได้เลือกแบบฟอร์ม หรือแบบฟอร์มใช้งานไม่ได้</h3>
+                {{/unless}}
+
+                {{#if data}}
+                <div style="height:85%;margin-top:-50px" class="swiper-container swiper-init" data-speed="400" data-space-between="40" data-pagination=".swiper-pagination">
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-wrapper">
+                        {{#each data}}
+                        <div class="swiper-slide">
+                            <div class="content-block-title" style="text-align:center;font-weight: bold;" section="{{id}}">{{text}}</div>
+                            <div class="page-content daily-list" style="padding-bottom:200px;">
+                                <div class="list-block" style="margin-top:-60px">
+                                    <div class="list-group">
+                                        {{#each details}}
+                                        <div class="content-block-title" data-id="{{id}}">{{text}}</div>
+                                        {{#if isQuestion}}
+                                        <div class="contact-other list-block">
+                                            <ul>
+                                                {{#each answers}}
+                                                <li>
+                                                    <label class="label-radio item-content">
+                                                        <input data-type="QA" type="radio" name="{{../id}}" value="{{id}}" {{#if checked}} checked{{/if}} />
+                                                        <div class="item-media">
+                                                            <i class="icon icon-form-radio"></i>
+                                                        </div>
+                                                        <div class="item-inner">
+                                                            <div class="item-title">{{text}}</div>
+                                                        </div>
+                                                    </label>
+                                                </li>
+                                                {{/each}}
+                                            </ul>
+                                        </div>
+                                        {{/if}}
+                                        {{/each}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+                    </div>
+                </div>
+                {{/if}}
+            </div>
+            </d
         </div>
-      </div>
     </div>
-    <div class="page">
-      <div class="page-content contact-edit-form">
-
-        <div class="contact-header">
-          <div class="item-photo">
-            <img src="img/cats/{{model.picId}}.png" />
-          </div>
-          <div class="header-text">
-            {{#if model.isFavorite}}<i class="icon icon-favorite ion-star"></i>{{/if}}
-            <h3>{{model.firstName}} {{model.lastName}}</h3>
-            <p>{{model.company}}</p>
-          </div>
-        </div>
-
-        <div class="list-block">
-          <ul>
-            <li>
-              <div class="item-content">
-                <div class="item-media">
-                  <i class="icon ion-star-outline"></i>
-                </div>
-                <div class="item-inner">
-                  <div class="item-title">Favorite</div>
-                  <div class="item-after">
-                    <label class="label-switch">
-                      <input id="isFavorite" type="checkbox" {{#if model.isFavorite}}checked{{/if}}>
-                      <div class="checkbox"></div>
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </div>
-
-        {{#unless data}}
-        <h3>ยังไม่ได้เลือกแบบฟอร์ม หรือแบบฟอร์มใช้งานไม่ได้</h3>        
-        {{/unless}}
-
-        {{#each data}}
-        <div class="content-block-title">{{sectionName}}</div>
-        {{#each data}}
-        <div class="content-block-title">{{qNo}}. {{qText}}</div>
-        <div class="contact-other list-block">
-          <ul>
-            {{#each answer}}
-            <li>
-              <label class="label-radio item-content">
-                <input data-type="QA" type="radio" name="{{../qId}}" value="{{aValue}}" {{#if checked}}checked{{/if}}/>
-                <div class="item-media">
-                  <i class="icon icon-form-radio"></i>
-                </div>
-                <div class="item-inner">
-                  <div class="item-title">{{aValue}} {{aText}}</div>
-                </div>
-              </label>
-            </li>
-            {{/each}}
-          </ul>
-        </div>
-        {{/each}}
-
-        {{/each}}
-
-        <div class="list-block">
-          <ul>
-            <li>
-              <a href="#" class="item-link list-button contact-delete-button">ลบรายชื่อ</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>

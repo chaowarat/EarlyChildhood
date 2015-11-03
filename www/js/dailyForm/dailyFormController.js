@@ -6,11 +6,7 @@
 	};
 	var isEdit = false;
 	var oldAnswer = null;
-	var bindings = [{
-		element: '.contact-delete-button',
-		event: 'click',
-		handler: deleteContact
-	}];
+	var bindings = [];
 
 	var template = {};
 
@@ -34,26 +30,30 @@
 		var tmp = app.utils.getAnswers(app.utils.getDateNow(), contact.id);		
 		if (tmp) {
 		    oldAnswer = tmp.pop();
+		    console.log(template)
 		    if (oldAnswer) {
 		        isEdit = true;
-		        for (var i = 0; i < template.data.length; i++) {
-		            for (var j = 0; j < template.data[i].data.length; j++) {
-		                var answer = findValue(oldAnswer.answers, template.data[i].data[j].qId);
-		                if (answer) {
-		                    for (var k = 0; k < template.data[i].data[j].answer.length; k++) {
-		                        if (template.data[i].data[j].answer[k].aValue == answer) {
-		                            template.data[i].data[j].answer[k].checked = true;
-		                        }
-		                        else {
-		                            template.data[i].data[j].answer[k].checked = false;
-		                        }
-		                    }
-		                }
-		            }
-		        }
+		        //for (var i = 0; i < template.length; i++) {
+		        //    for (var j = 0; j < template[i].details.length; j++) {
+		        //        for (var k = 0; k < template[i].details[j].answers.length; j++) {
+		        //            var answer = findValue(oldAnswer.answers, template[i].details[j].answers[k].id);                            
+		        //            if (answer) {
+		        //                console.log(answer)
+		        //                for (var l = 0; l < template[i].details[j].answers.length; l++) {
+		        //                    if (template[i].details[j].answers[l].id == answer) {
+		        //                        template[i].details[j].answers[l].checked = true;
+		        //                    }
+		        //                    else {
+		        //                        template[i].details[j].answers[l].checked = false;
+		        //                    }
+		        //                }
+		        //            }
+		        //        }
+		        //    }
+		        //}
 		    }
 		}
-		View.render({ model: contact, bindings: bindings, state: state, doneCallback: saveContact, data: template.data });
+		View.render({ model: contact, bindings: bindings, state: state, doneCallback: saveContact, data: template });
 	}
 
 	function findValue(array, key){
@@ -71,34 +71,22 @@
 	    var template = null;
 	    for (var i = 0; i < templates.length; i++) {
 	        if (templates[i].selected == true) {
-	            template = templates[i];
+	            template = templates[i].template;
 	        }
 	    }
 	    if (template) {
+	        var answers = JSON.parse(defaultTemplate).answers;
+	        for (var i = 0; i < template.length; i++) {
+	            for (var j = 0; j < template[i].details.length; j++) {
+	                template[i].details[j]['answers'] = answers;
+	            }
+	        }
+
 	        return template;
 	    }
 	    else{
 	        return null;
 	    }
-	}
-
-	function deleteContact() {
-		app.f7.actions([[{
-			text: 'ยืนยันการลบ',
-			red: true,
-			onClick: function() {
-				var contacts = JSON.parse(localStorage.getItem("f7Contacts"));
-				_.remove(contacts, { id: contact.id });
-				localStorage.setItem("f7Contacts", JSON.stringify(contacts));
-				closePage();
-				app.router.load('list'); // reRender main page view
-				app.mainView.goBack("index.html", false);
-				
-			}
-		}], [{
-			text: 'ยกเลิก',
-			bold: true
-		}]]);
 	}
 
 	function saveContact(inputValues) {

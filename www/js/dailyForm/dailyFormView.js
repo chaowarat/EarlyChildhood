@@ -16,7 +16,7 @@ define(['app', 'js/contactModel', 'hbs!js/dailyForm/dailyForm'], function (app, 
 
 	function bindSaveEvent(doneCallback) {
 		$('.contact-save-link').on('click', function() {
-			var inputValues = $('.contact-edit-form input');
+		    var inputValues = $('.daily-list input');
 			doneCallback(inputValues);
 		});
 	}
