@@ -48,8 +48,19 @@ define(['app', 'hbs!js/sync/sync', 'hbs!js/sync/roomPanel', 'hbs!js/sync/rightPa
 		}
 	}
 
+	function updateCountUnSync(number) {
+	    if (number > 0) {
+	        $('.badge').text(number);
+	        $('.badge').show();
+	    }
+	    else {
+	        $('.badge').hide();
+	    }
+	}
+
 	return {
 	    render: render,
-	    renderRight: renderRight
+	    renderRight: renderRight,
+	    updateCountUnSync: updateCountUnSync
 	};
 });

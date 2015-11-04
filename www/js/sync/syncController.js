@@ -32,7 +32,7 @@ define(["app", "js/contactModel", "js/sync/syncView"], function (app, Contact, V
     var model = { 'updateTime': null, rooms: [] };
 
     function init(query) {
-        loadModel();
+        loadModel();        
         View.render({ model: model, bindings: bindings, unSync: countUnSync(), contactUnSync: contactUnSync()});
     }
 
@@ -53,26 +53,51 @@ define(["app", "js/contactModel", "js/sync/syncView"], function (app, Contact, V
     function uploadAnswer(e) {
         e.target.style.display = 'none';
         e.target.nextElementSibling.style.display = '';
+        var classId = e.target.getAttribute('data-class');
+        var roomId = e.target.getAttribute('data-room');
+        var CID = e.target.getAttribute('data-CID');
         var answerId = e.target.getAttribute('data-value');
-        var _data = {'data': answerId}
-        var _url = 'http://private-edu.azurewebsites.net/webservices/getservice.svc/postTemplate';
+        var _data = {};
+        var memo = JSON.parse(localStorage.getItem("memo"));
+        if (!memo['0'] || !memo['1']) {
+            return;
+        }
+
+        var _tmp = JSON.parse(localStorage.getItem("answer-" + answerId));
+        var answer = _.map(_tmp.answers, function (value) { var key = Object.keys(value)[0]; return { QID: key, AID: value[key] } });
+
+        _data['USERNAME'] = app.utils.Base64.decode(memo['0']);
+        _data['PASSWORD'] = app.utils.Base64.decode(memo['1']);
+        _data['host'] = localStorage.getItem("host");
+        _data['year'] = (new Date()).getFullYear();
+        _data['CID'] = CID;
+        _data['class'] = classId;
+        _data['room'] = roomId;
+        _data['answers'] = answer;
+        _data['recordDate'] = _tmp.recordDate;
+
+        var tmp = encodeURIComponent(JSON.stringify(_data))
+        var _url = 'http://private-edu.azurewebsites.net/webservices/getservice.svc/saveDailyForm';
         Dom7.ajax({
             url: _url,
             method: 'POST',
-            data: JSON.stringify(_data),
-            contentType: "application/x-www-form-urlencoded",
-            dataType: 'json',            
+            data: 'json=' + encodeURIComponent(JSON.stringify(_data)),
+            contentType: "application/x-www-form-urlencoded",          
             success: function (msg) {
                 e.target.nextElementSibling.style.display = 'none';
                 e.target.innerText = '';
                 e.target.style.display = 'block';
-                var icon = document.createElement("i");
-                icon.className = 'icon ion-checkmark';
-                e.target.appendChild(icon);
-                setTimeout(function () {
-                    e.target.parentElement.parentElement.parentElement.remove();
-                }, 1000);
-                console.log(msg);
+                var response = JSON.parse(JSON.parse(msg));
+                if (response['status'].toLocaleLowerCase() == 'ok') {
+                    localStorage.removeItem("answer-" + answerId);
+                    View.updateCountUnSync(countUnSync());
+                    var icon = document.createElement("i");
+                    icon.className = 'icon ion-checkmark';
+                    e.target.appendChild(icon);
+                    setTimeout(function () {
+                        e.target.parentElement.parentElement.parentElement.remove();
+                    }, 1000);
+                }
             },
             error: function (error) {
                 console.log(error)
@@ -97,7 +122,7 @@ define(["app", "js/contactModel", "js/sync/syncView"], function (app, Contact, V
             }
         }
         result.sort(contactSort);
-        result = _.map(result, function (value) { return { name: value.firstName + ' ' + value.lastName, id: value.answerId } });
+        result = _.map(result, function (value) { return { name: value.firstName + ' ' + value.lastName, id: value.answerId, class: value.classId, room: value.roomId, CID: value.CID } });
         return result;
     }
 
