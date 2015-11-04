@@ -29,40 +29,32 @@
 	    // store answer id to answerId
 		var tmp = app.utils.getAnswers(app.utils.getDateNow(), contact.id);		
 		if (tmp) {
-		    oldAnswer = tmp.pop();
-		    console.log(template)
-		    if (oldAnswer) {
+		    var _pop = tmp.pop();
+		    if (_pop) {
+		        oldAnswer = JSON.parse(JSON.stringify(_pop.answers));
 		        isEdit = true;
-		        //for (var i = 0; i < template.length; i++) {
-		        //    for (var j = 0; j < template[i].details.length; j++) {
-		        //        for (var k = 0; k < template[i].details[j].answers.length; j++) {
-		        //            var answer = findValue(oldAnswer.answers, template[i].details[j].answers[k].id);                            
-		        //            if (answer) {
-		        //                console.log(answer)
-		        //                for (var l = 0; l < template[i].details[j].answers.length; l++) {
-		        //                    if (template[i].details[j].answers[l].id == answer) {
-		        //                        template[i].details[j].answers[l].checked = true;
-		        //                    }
-		        //                    else {
-		        //                        template[i].details[j].answers[l].checked = false;
-		        //                    }
-		        //                }
-		        //            }
-		        //        }
-		        //    }
-		        //}
+		        for (var m = 0; m < oldAnswer.length; m++) {
+		            var questionId = Object.keys(oldAnswer[m])[0];
+		            for (var i = 0; i < template.length; i++) {
+		                for (var j = 0; j < template[i].details.length; j++) {
+		                    if (template[i].details[j].id == questionId && template[i].details[j].isQuestion) { // same question		                        
+		                        var answerId = oldAnswer[m][template[i].details[j].id];
+		                        var _answers = JSON.parse(JSON.stringify(template[i].details[j].answers));
+		                        for (var k = 0; k < _answers.length; k++) {
+		                            if (_answers[k].id == answerId) {
+		                                _answers[k].checked = true;
+		                                template[i].details[j].answers = _answers;
+		                                break;
+		                            }
+		                        }
+		                        break;
+		                    }		                    
+		                }
+		            }
+		        }		        
 		    }
 		}
 		View.render({ model: contact, bindings: bindings, state: state, doneCallback: saveContact, data: template });
-	}
-
-	function findValue(array, key){
-	    for (var i = 0; i < array.length; i++) {
-	        if (Object.keys(array[i])[0] == key) {
-	            return array[i][key];
-	        }
-	    }
-	    return null;
 	}
 
 	function getQuestion() {
@@ -78,6 +70,7 @@
 	        var answers = JSON.parse(defaultTemplate).answers;
 	        for (var i = 0; i < template.length; i++) {
 	            for (var j = 0; j < template[i].details.length; j++) {
+	                answers[0].checked = true;
 	                template[i].details[j]['answers'] = answers;
 	            }
 	        }
