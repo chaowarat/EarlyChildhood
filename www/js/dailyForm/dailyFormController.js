@@ -5,7 +5,7 @@
 		isNew: false
 	};
 	var isEdit = false;
-	var oldAnswer = null;
+	var oldAnswer = null, oldAnswerId = null;
 	var bindings = [];
 
 	var template = {};
@@ -31,6 +31,7 @@
 		if (tmp) {
 		    var _pop = tmp.pop();
 		    if (_pop) {
+		        oldAnswerId = _pop;
 		        oldAnswer = JSON.parse(JSON.stringify(_pop.answers));
 		        isEdit = true;
 		        for (var m = 0; m < oldAnswer.length; m++) {
@@ -93,7 +94,7 @@
 	    }
 	    var _id = app.utils.generateGUID();
 	    if (isEdit) {
-	        _id = oldAnswer.id;
+	        _id = oldAnswerId.id;
 	    }
 	    var answer = {
 	        'id': _id,
