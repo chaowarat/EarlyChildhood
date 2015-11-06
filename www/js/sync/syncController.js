@@ -109,7 +109,10 @@ define(["app", "js/contactModel", "js/sync/syncView"], function (app, Contact, V
 
     function contactUnSync() {
         var f7Contacts = localStorage.getItem("f7Contacts");
-        var contacts = f7Contacts ? JSON.parse(f7Contacts) : tempInitializeStorage();
+        if (!f7Contacts) {
+            return [];
+        }
+        var contacts = JSON.parse(f7Contacts);
         var answers = app.utils.getAnswers();
         var result = [];
         for (var i = 0; i < answers.length; i++) {
@@ -227,7 +230,10 @@ define(["app", "js/contactModel", "js/sync/syncView"], function (app, Contact, V
 
     function loadContacts(filter) {
         var f7Contacts = localStorage.getItem("f7Contacts");
-        var contacts = f7Contacts ? JSON.parse(f7Contacts) : tempInitializeStorage();
+        if (!f7Contacts) {
+            return null;
+        }
+        var contacts = JSON.parse(f7Contacts);
         if (filter) {
             contacts = _.filter(contacts, filter);
         }
