@@ -98,6 +98,9 @@ define(["app", "js/contactModel", "js/sync/syncView"], function (app, Contact, V
                         e.target.parentElement.parentElement.parentElement.remove();
                     }, 1000);
                 }
+                else {
+                    app.f7.alert(response['errorMessage'].substring(0, 200) + ' โปรดติดต่อผู้ดูแลระบบ');
+                }
             },
             error: function (error) {
                 console.log(error)
