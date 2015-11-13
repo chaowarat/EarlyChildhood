@@ -6,6 +6,8 @@ define(['app', 'js/contactModel', 'hbs!js/dailyForm/dailyForm'], function (app, 
 		app.f7.popup(template);
 		bindEvents(params.bindings);
 		bindSaveEvent(params.doneCallback);
+		$('#inputWeight').val(params.weight).trigger("input");
+		$('#inputHeight').val(params.height).trigger("input");
 	}
 
 	function bindEvents(bindings) {
@@ -17,7 +19,14 @@ define(['app', 'js/contactModel', 'hbs!js/dailyForm/dailyForm'], function (app, 
 	function bindSaveEvent(doneCallback) {
 		$('.contact-save-link').on('click', function() {
 		    var inputValues = $('.daily-list input');
-			doneCallback(inputValues);
+		    doneCallback(inputValues, $('#inputWeight').val(), $('#inputHeight').val());
+		});
+		$('.close-daily').on('click', function () {
+		    app.f7.closeModal("#dailyModal");
+		});
+		$('input[type="range"]').on('input', function () {
+		    var node = this.parentNode.parentNode.previousSibling.previousSibling;
+		    node.innerText = node.innerText.split('(')[0] + '(' + this.value + ' ' + node.innerText.split(' ')[1];
 		});
 	}
 

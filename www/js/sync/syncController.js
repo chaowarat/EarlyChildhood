@@ -73,9 +73,10 @@ define(["app", "js/contactModel", "js/sync/syncView"], function (app, Contact, V
         _data['CID'] = CID;
         _data['class'] = classId;
         _data['room'] = roomId;
+        _data['weight'] = _tmp.weight;
+        _data['height'] = _tmp.height;
         _data['answers'] = answer;
         _data['recordDate'] = _tmp.recordDate;
-
         var tmp = encodeURIComponent(JSON.stringify(_data))
         var _url = 'http://private-edu.azurewebsites.net/webservices/getservice.svc/saveDailyForm';
         Dom7.ajax({
