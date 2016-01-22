@@ -152,7 +152,7 @@ define(["app", "js/contactModel", "js/sync/syncView"], function (app, Contact, V
                     if (!memo['0'] || !memo['1']) {
                         return;
                     }
-                    var url = 'http://private-edu.azurewebsites.net/webservices/getservice.svc/getStudents?USERNAME=' + app.utils.Base64.decode(memo['0']) + '&PASSWORD=' + app.utils.Base64.decode(memo['1']) + '&YEAR=2015';
+                    var url = 'http://private-edu.azurewebsites.net/webservices/getservice.svc/getStudents?USERNAME=' + app.utils.Base64.decode(memo['0']) + '&PASSWORD=' + app.utils.Base64.decode(memo['1']) + '&YEAR=' + (new Date()).getFullYear();
                     Dom7.ajax({
                         url: url,
                         dataType: 'json',
