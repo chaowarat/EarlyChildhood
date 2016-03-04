@@ -1,4 +1,21 @@
 {
+    "org.apache.cordova.camera": {
+        "source": {
+            "type": "registry",
+            "id": "org.apache.cordova.camera"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-camera": {
+        "source": {
+            "type": "git",
+            "url": "https://git-wip-us.apache.org/repos/asf/cordova-plugin-camera.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
     "cordova-plugin-whitelist": {
         "source": {
             "type": "registry",
@@ -7,26 +24,18 @@
         "is_top_level": true,
         "variables": {}
     },
-    "org.apache.cordova.device": {
+    "org.apache.cordova.geolocation": {
         "source": {
             "type": "registry",
-            "id": "org.apache.cordova.device"
+            "id": "org.apache.cordova.geolocation"
         },
         "is_top_level": true,
         "variables": {}
     },
-    "org.apache.cordova.console": {
+    "cordova-plugin-network-information": {
         "source": {
             "type": "registry",
-            "id": "org.apache.cordova.console"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-crosswalk-webview": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-crosswalk-webview"
+            "id": "cordova-plugin-network-information"
         },
         "is_top_level": true,
         "variables": {}

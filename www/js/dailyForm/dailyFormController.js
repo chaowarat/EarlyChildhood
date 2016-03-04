@@ -47,10 +47,12 @@
 		                        for (var k = 0; k < _answers.length; k++) {
 		                            if (_answers[k].id == answerId) {
 		                                _answers[k].checked = true;
-		                                template[i].details[j].answers = _answers;
-		                                break;
+		                            }
+		                            else {
+		                                _answers[k].checked = false;
 		                            }
 		                        }
+		                        template[i].details[j].answers = _answers;
 		                        break;
 		                    }		                    
 		                }
