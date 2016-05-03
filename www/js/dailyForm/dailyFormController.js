@@ -27,7 +27,7 @@
 	    // isEdit = true
 	    // edit ddl selected value in template
 	    // store answer id to answerId
-		var _weight = 20, _height = 100; // default value
+		var _weight = 20, _height = 100, _head = 20; // default value
 		var tmp = app.utils.getAnswers(app.utils.getDateNow(), contact.id);		
 		if (tmp) {
 		    var _pop = tmp.pop();
@@ -35,6 +35,7 @@
 		        oldAnswerId = _pop;
 		        _weight = _pop.weight;
 		        _height = _pop.height;
+            _head = _pop.head;
 		        oldAnswer = JSON.parse(JSON.stringify(_pop.answers));
 		        isEdit = true;
 		        for (var m = 0; m < oldAnswer.length; m++) {
@@ -60,7 +61,7 @@
 		        }		        
 		    }
 		}
-		View.render({ model: contact, bindings: bindings, state: state, doneCallback: saveContact, data: template, weight: _weight, height: _height });
+		View.render({ model: contact, bindings: bindings, state: state, doneCallback: saveContact, data: template, weight: _weight, height: _height, head: _head });
 	}
 
 	function getQuestion() {
@@ -88,7 +89,7 @@
 	    }
 	}
 
-	function saveContact(inputValues, w, h) {
+	function saveContact(inputValues, w, h, head) {
 	    var QAs = [];
 	    for (var i = 0; i < inputValues.length; i++) {
 	        if (inputValues[i].getAttribute('data-type') == 'QA' && inputValues[i].checked) {
@@ -104,7 +105,8 @@
 	    var answer = {
 	        'id': _id,
 	        'weight': w,
-            'height': h,
+          'height': h,
+          'head': head,
 	        'recordDate': app.utils.getDateTimeNow(),
 	        'personId': contact.id, 'templateId': template.id, 'answers': QAs
 	    };

@@ -69,15 +69,18 @@ define(["app", "js/contactModel", "js/sync/syncView"], function (app, Contact, V
         _data['USERNAME'] = app.utils.Base64.decode(memo['0']);
         _data['PASSWORD'] = app.utils.Base64.decode(memo['1']);
         _data['host'] = localStorage.getItem("host");
+        _data['staff'] = localStorage.getItem("staff");
         _data['year'] = (new Date()).getFullYear();
         _data['CID'] = CID;
         _data['class'] = classId;
         _data['room'] = roomId;
         _data['weight'] = _tmp.weight;
         _data['height'] = _tmp.height;
+        _data['head'] = _tmp.head;
         _data['answers'] = answer;
         _data['recordDate'] = _tmp.recordDate;
-        var tmp = encodeURIComponent(JSON.stringify(_data))
+        //var tmp = encodeURIComponent(JSON.stringify(_data))
+        //console.log(tmp)
         var _url = 'http://private-edu.azurewebsites.net/webservices/getservice.svc/saveDailyForm';
         Dom7.ajax({
             url: _url,
@@ -174,6 +177,7 @@ define(["app", "js/contactModel", "js/sync/syncView"], function (app, Contact, V
                                         });
                                         var students = rooms[j].students;
                                         for (var k = 0; k < students.length; k++) {
+                                          if(students[k].Name){
                                             var name = students[k].Name.split(' ').slice(1).join(' ').trim();                                            
                                             contacts.push(new Contact({
                                                 "firstName": name.split(' ')[0],
@@ -189,6 +193,7 @@ define(["app", "js/contactModel", "js/sync/syncView"], function (app, Contact, V
                                                 "city": "", "isFavorite": true,
                                                 "lat": 13.754595, "long": 100.602089
                                             }));
+                                          }
                                         }
                                     }
                                 }

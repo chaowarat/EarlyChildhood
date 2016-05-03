@@ -8,6 +8,7 @@ define(['app', 'js/contactModel', 'hbs!js/dailyForm/dailyForm'], function (app, 
 		bindSaveEvent(params.doneCallback);
 		$('#inputWeight').val(params.weight).trigger("input");
 		$('#inputHeight').val(params.height).trigger("input");
+    $('#inputHead').val(params.head).trigger("input");
 	}
 
 	function bindEvents(bindings) {
@@ -19,7 +20,7 @@ define(['app', 'js/contactModel', 'hbs!js/dailyForm/dailyForm'], function (app, 
 	function bindSaveEvent(doneCallback) {
 		$('.contact-save-link').on('click', function() {
 		    var inputValues = $('.daily-list input');
-		    doneCallback(inputValues, $('#inputWeight').val(), $('#inputHeight').val());
+		    doneCallback(inputValues, $('#inputWeight').val(), $('#inputHeight').val(), $('#inputHead').val());
 		});
 		$('.close-daily').on('click', function () {
 		    app.f7.closeModal("#dailyModal");

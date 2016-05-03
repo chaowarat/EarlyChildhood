@@ -51,6 +51,7 @@
                     var response = JSON.parse(msg);
                     localStorage.setItem("user", response.data.Name);
                     localStorage.setItem("host", response.data.HostID);
+                    localStorage.setItem("staff", response.data.StaffID);
                     if (response.status.toLowerCase() == 'ok') {
                         var memo = { 0: app.utils.Base64.encode(user), 1: app.utils.Base64.encode(pass) };
                         localStorage.setItem("memo", JSON.stringify(memo));
