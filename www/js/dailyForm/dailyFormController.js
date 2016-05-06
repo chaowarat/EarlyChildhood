@@ -10,9 +10,9 @@
 
 	var template = {};
 
-	function init(query) {
-	    isEdit = false;
-	    oldAnswer = null;
+	function init(query) {    
+	  isEdit = false;
+	  oldAnswer = null;
 		var contacts = JSON.parse(localStorage.getItem("f7Contacts"));
 		if (query && query.id) {
 			contact = new Contact(_.find(contacts, { id: query.id }));
@@ -89,7 +89,7 @@
 	    }
 	}
 
-	function saveContact(inputValues, w, h, head) {
+	function saveContact(inputValues, w, h, head, _date) {
 	    var QAs = [];
 	    for (var i = 0; i < inputValues.length; i++) {
 	        if (inputValues[i].getAttribute('data-type') == 'QA' && inputValues[i].checked) {
@@ -107,7 +107,7 @@
 	        'weight': w,
           'height': h,
           'head': head,
-	        'recordDate': app.utils.getDateTimeNow(),
+	        'recordDate': _date,
 	        'personId': contact.id, 'templateId': template.id, 'answers': QAs
 	    };
 	    app.utils.insertAnswer(answer);

@@ -2,7 +2,7 @@ define(['app', 'js/contactModel', 'hbs!js/dailyForm/dailyForm'], function (app, 
 	var $ = Dom7;
 
 	function render(params) {
-	    var template = dailyForm({ model: params.model, state: params.state, data: params.data });
+	  var template = dailyForm({ model: params.model, state: params.state, data: params.data });
 		app.f7.popup(template);
 		bindEvents(params.bindings);
 		bindSaveEvent(params.doneCallback);
@@ -20,7 +20,7 @@ define(['app', 'js/contactModel', 'hbs!js/dailyForm/dailyForm'], function (app, 
 	function bindSaveEvent(doneCallback) {
 		$('.contact-save-link').on('click', function() {
 		    var inputValues = $('.daily-list input');
-		    doneCallback(inputValues, $('#inputWeight').val(), $('#inputHeight').val(), $('#inputHead').val());
+		    doneCallback(inputValues, $('#inputWeight').val(), $('#inputHeight').val(), $('#inputHead').val(), $('#inputDate').val());
 		});
 		$('.close-daily').on('click', function () {
 		    app.f7.closeModal("#dailyModal");

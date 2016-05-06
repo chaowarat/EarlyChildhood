@@ -47,6 +47,13 @@ module.exports = [
         "clobbers": [
             "CameraPopoverHandle"
         ]
+    },
+    {
+        "file": "plugins/com.okaybmd.cordova.plugin.datepicker/www/android/DatePicker.js",
+        "id": "com.okaybmd.cordova.plugin.datepicker.DatePicker",
+        "clobbers": [
+            "datePicker"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -55,7 +62,8 @@ module.exports.metadata =
     "cordova-plugin-network-information": "1.1.0",
     "cordova-plugin-whitelist": "1.0.0",
     "org.apache.cordova.camera": "0.3.6",
-    "org.apache.cordova.geolocation": "0.3.12"
+    "org.apache.cordova.geolocation": "0.3.12",
+    "com.okaybmd.cordova.plugin.datepicker": "1.3.7"
 }
 // BOTTOM OF METADATA
 });
