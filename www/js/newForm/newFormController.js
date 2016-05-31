@@ -41,8 +41,8 @@
 	    app.f7.closeModal('#newFormModal');
 	}
 
-	function saveTemplate(inputValues, name, detail) {
-	    var template = { id: app.utils.generateGUID(), name: name, content: detail, template: [], selected: true };
+	function saveTemplate(inputValues, name) {
+	    var template = { id: app.utils.generateGUID(), name: name, template: [], selected: true };
 	    var _data = [];
 	    for (var i = 0; i < sections.length; i++) {
 	        _data.push({ id: sections[i].id, isQuestion: false, text: sections[i].sectionName, details: [] });
@@ -60,27 +60,69 @@
 	            }
 	        }	        
 	    }
-	    template.template = _data;;
-	    var templates = JSON.parse(localStorage.getItem("templates"));
-	    if (templates) {
-	        for (var i = 0; i < templates.length; i++) {
-	            templates[i]['selected'] = false;
-	        }
-	        templates.sort(function (a, b) {
-	            if (a.id > b.id) {
-	                return 1;
-	            }
-	            if (a.id < b.id) {
-	                return -1;
-	            }
-	            return 0;
-	        });
-	        var tmp = [];
-	        tmp.push(template);
-	        templates = tmp.concat(templates);
-	        localStorage.setItem("templates", JSON.stringify(templates));
-	    }	    
-		closePage();
+      var answer = [];
+      for(var i = 0; i < _data.length; i++){
+        if(_data[i].details.length > 0){
+          for(var j = 0; j < _data[i].details.length; j++){
+            answer.push(_data[i].details[j].id);
+          }
+        }
+      }
+      
+      var _dataPost = {};
+        var memo = JSON.parse(localStorage.getItem("memo"));
+        if (!memo['0'] || !memo['1']) {
+            return;
+        }
+
+        _dataPost['USERNAME'] = app.utils.Base64.decode(memo['0']);
+        _dataPost['PASSWORD'] = app.utils.Base64.decode(memo['1']);
+        _dataPost['host'] = localStorage.getItem("host");
+        _dataPost['staff'] = localStorage.getItem("staff");
+        _dataPost['templateName'] = name;
+        _dataPost['data'] = answer;
+        var _url = 'http://alphaedu.azurewebsites.net/webservices/getservice.svc/saveTemplate';
+        Dom7.ajax({
+            url: _url,
+            method: 'POST',
+            data: 'json=' + encodeURIComponent(JSON.stringify(_dataPost)),
+            contentType: "application/x-www-form-urlencoded",          
+            success: function (msg) {
+                var response = JSON.parse(JSON.parse(msg));
+                if (response['status'].toLocaleLowerCase() == 'ok') {
+                  template['refId'] = response['templateId'];
+                  template.template = _data;;
+                  var templates = JSON.parse(localStorage.getItem("templates"));
+                  if (templates) {
+                      for (var i = 0; i < templates.length; i++) {
+                          templates[i]['selected'] = false;
+                      }
+                      templates.sort(function (a, b) {
+                          if (a.id > b.id) {
+                              return 1;
+                          }
+                          if (a.id < b.id) {
+                              return -1;
+                          }
+                          return 0;
+                      });
+                      var tmp = [];
+                      tmp.push(template);
+                      templates = tmp.concat(templates);
+                      localStorage.setItem("templates", JSON.stringify(templates));
+                  }	    
+                  closePage();
+                }
+                else {
+                  app.f7.alert(response['errorMessage'].substring(0, 200) + ' โปรดติดต่อผู้ดูแลระบบ');
+                }
+            },
+            error: function (error) {
+                console.log(error)
+                app.f7.alert(error.statusText + ' โปรดติดต่อผู้ดูแลระบบ');
+                app.f7.pullToRefreshDone();
+            }
+        });
 	}
 
 	function generateContent(id) {

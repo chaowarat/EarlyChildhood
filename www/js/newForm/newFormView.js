@@ -17,7 +17,7 @@ define(['app', 'hbs!js/newForm/newForm'], function (app, newForm) {
 	function bindSaveEvent(doneCallback) {
 	    $('.contact-save-link').on('click', function () {
 	        var inputValues = $('.swiper-list input');
-	        doneCallback(inputValues, $('#input-form-name').val(), $('#input-form-detail').val());
+	        doneCallback(inputValues, $('#input-form-name').val());
 	    });
 	}
 

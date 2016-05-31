@@ -1,6 +1,6 @@
 ﻿define(["app", "js/contactModel", "js/list/listView"], function (app, Contact, ListView) {
 
-    var menu = [];
+    var menu = [], tmpTemplate = [], templates = [], requestIndex = 0, templateName = '', templateId = '';
 
     var bindings = [{
         element: '.list-group li.contact-item',
@@ -13,8 +13,23 @@
     };
 
     function init() {
-        if (!JSON.parse(localStorage.getItem('templates'))) {
-            templateInitializeStorage();
+        if (!JSON.parse(localStorage.getItem('templates')) && localStorage.getItem("host")) {
+          // get template
+          tmpTemplate = [];
+          requestIndex = 0;
+          var url = 'http://alphaedu.azurewebsites.net/webservices/getservice.svc/getAllTemplateData?host=' + localStorage.getItem("host");
+            Dom7.ajax({
+                url: url,
+                dataType: 'json',
+                success: function (msg) {
+                  tmpTemplate = JSON.parse(msg).data;
+                  templateInitializeStorage();
+                  requestTemplate();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    app.f7.alert(xhr.responseText + 'ไม่สามารถโหลด template ได้', 'ERROR!');
+                }
+            });
         }
         var contacts = loadContacts();
         generateMenu();
@@ -35,6 +50,38 @@
         });        
     }
 
+    function requestTemplate(){
+      if(requestIndex < tmpTemplate.length){
+        templateId = tmpTemplate[requestIndex].split('/')[0];
+        templateName = tmpTemplate[requestIndex].split('/')[1];
+        requestIndex++;
+        var url = 'http://alphaedu.azurewebsites.net/webservices/getservice.svc/getTemplateData?id=' + templateId + '&host=' + localStorage.getItem("host");
+        Dom7.ajax({
+          url: url,
+          dataType: 'json',
+          success: function (msg) {
+            var response = JSON.parse(msg);
+            templates.push(
+              {
+                id: app.utils.generateGUID(), name: templateName, content: '',
+                refId: templateId,
+                template: reFormat(response.data),
+                selected: false,
+                isDefault: false
+              }
+            );
+            requestTemplate();
+          },
+          error: function (xhr, ajaxOptions, thrownError) {
+            app.f7.alert(xhr.responseText + 'ไม่สามารถโหลด template ได้', 'ERROR!');
+          }
+        });
+      }
+      else{
+        localStorage.setItem("templates", JSON.stringify(templates));
+      }
+    }
+    
     function countUnSync() {
         return app.utils.getAnswers().length;
     }
@@ -42,7 +89,7 @@
     function login(user, pass) {
         if (user && pass) {
             app.f7.showIndicator();
-            var url = 'http://private-edu.azurewebsites.net/webservices/getservice.svc/getCheckUser?USERNAME=' + user + '&PASSWORD=' + pass;
+            var url = 'http://alphaedu.azurewebsites.net/webservices/getservice.svc/getCheckUser?USERNAME=' + user + '&PASSWORD=' + pass;
             Dom7.ajax({
                 url: url,
                 dataType: 'json',
@@ -179,16 +226,14 @@
     }
 
     function templateInitializeStorage() {
-        var templates = [{
-            id: app.utils.generateGUID(), name: 'แบบฟอร์มพื้นฐาน', content: '',
-            template: reFormat((JSON.parse(defaultTemplate)).data),
-            selected: true,
-            isDefault: true
-        }];        
-        for (var i = 0; i < templates.length; i++) {            
-            templates[i].content = generateContent(templates[i].template);
+      templates.push(
+        {
+          id: app.utils.generateGUID(), name: 'แบบฟอร์มพื้นฐาน', content: '',
+          template: reFormat((JSON.parse(defaultTemplate)).data),
+          selected: true,
+          isDefault: true
         }
-        localStorage.setItem("templates", JSON.stringify(templates));
+      ); 
     }
 
     function reFormat(data) {        
